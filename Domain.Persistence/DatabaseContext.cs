@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Domain.Model;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infraestructure.Database
 {
@@ -7,6 +8,8 @@ namespace Infraestructure.Database
         public DatabaseContext(DbContextOptions<DatabaseContext> options)
           : base(options)
         { }
+
+        public DbSet<Game> Games { get; set; }
 
         public override int SaveChanges()
         {

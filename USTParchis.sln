@@ -27,9 +27,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain.Services.Tests", "Do
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.API.Tests", "Application.Services.Tests\Application.API.Tests.csproj", "{423307E8-2B28-4F7E-989E-8832DC603585}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.API", "Application.API\Application.API.csproj", "{CCAC1FF8-58CD-434D-BAF6-40D91C781064}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application.API", "Application.API\Application.API.csproj", "{CCAC1FF8-58CD-434D-BAF6-40D91C781064}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "USTParchis", "USTParchis\USTParchis.csproj", "{71238769-EE3D-445A-951B-E6328EF76C76}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "USTParchis", "USTParchis\USTParchis.csproj", "{71238769-EE3D-445A-951B-E6328EF76C76}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
