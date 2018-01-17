@@ -27,6 +27,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "USTParchis", "USTParchis\US
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infraestructure.Reflection", "Infraestructure.Reflection\Infraestructure.Reflection.csproj", "{44DFE337-BE09-4017-848B-A893A3C914E5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain.Services.Tests", "Domain.Services.Tests\Domain.Services.Tests.csproj", "{30EB07ED-343F-46D4-AEBD-F6DCA250BAA2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -65,6 +67,10 @@ Global
 		{44DFE337-BE09-4017-848B-A893A3C914E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{44DFE337-BE09-4017-848B-A893A3C914E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{44DFE337-BE09-4017-848B-A893A3C914E5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{30EB07ED-343F-46D4-AEBD-F6DCA250BAA2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{30EB07ED-343F-46D4-AEBD-F6DCA250BAA2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{30EB07ED-343F-46D4-AEBD-F6DCA250BAA2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{30EB07ED-343F-46D4-AEBD-F6DCA250BAA2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -77,6 +83,7 @@ Global
 		{838C9B84-8F02-4B8C-A10D-973ADFCF29CD} = {2A04A8BD-610A-4EA6-8B1C-44F83E6B55CF}
 		{CCAC1FF8-58CD-434D-BAF6-40D91C781064} = {2A04A8BD-610A-4EA6-8B1C-44F83E6B55CF}
 		{44DFE337-BE09-4017-848B-A893A3C914E5} = {C3A71A5A-B613-4080-A504-DB5264AF3A87}
+		{30EB07ED-343F-46D4-AEBD-F6DCA250BAA2} = {D2CDA2BA-B9C4-45D4-A094-65F93BF67EE4}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5C95633C-AF3C-4071-8A8F-D0976F12CF1C}
