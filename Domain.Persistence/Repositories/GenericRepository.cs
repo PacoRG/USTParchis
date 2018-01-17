@@ -43,7 +43,6 @@ namespace Infraestructure.Persistence.Repositories
         {
 
             _context.Set<T>().Add(t);
-            _context.SaveChanges();
             return t;
         }
 
@@ -78,7 +77,6 @@ namespace Infraestructure.Persistence.Repositories
         public virtual void Delete(T entity)
         {
             _context.Set<T>().Remove(entity);
-            _context.SaveChanges();
         }
 
         public virtual async Task<int> DeleteAsyn(T entity)
@@ -95,7 +93,6 @@ namespace Infraestructure.Persistence.Repositories
             if (exist != null)
             {
                 _context.Entry(exist).CurrentValues.SetValues(t);
-                _context.SaveChanges();
             }
             return exist;
         }
