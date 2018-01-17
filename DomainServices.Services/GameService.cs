@@ -20,6 +20,8 @@ namespace DomainServices.Services
 
         public void SaveGame(Game game)
         {
+            if (game == null) throw new NullReferenceException(nameof(game));
+
             if(GameExists(game))
             {
                 game.ModifiedAt = DateTime.Now;

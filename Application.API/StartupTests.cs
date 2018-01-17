@@ -8,9 +8,9 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Application.API
 {
-    public class Startup
+    public class StartupTests
     {
-        public Startup(IConfiguration configuration)
+        public StartupTests(IConfiguration configuration)
         {
             Configuration = configuration;
         }
@@ -23,8 +23,7 @@ namespace Application.API
             var servcieRegister = new ServiceRegistryManager();
 
             services.AddDbContext<DatabaseContext>(options =>
-                options.UseSqlServer(this.Configuration.GetConnectionString("USTParchis"), sqlOptions =>
-                    sqlOptions.MigrationsAssembly("Infraestructure.Persistence")));
+                options.UseInMemoryDatabase("MyTestDatabase"));
 
             services.AddMvc();
             servcieRegister.Register(services);

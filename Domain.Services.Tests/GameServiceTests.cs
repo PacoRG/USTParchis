@@ -11,6 +11,26 @@ namespace Domain.Services.Tests
     public class GameServiceTests
     {
         [Fact]
+        public void Should_Break_If_Null_Game_Is_Passed()
+        {
+            var repositoryMock = new Mock<IGenericRepository<Game>>();
+
+            var sut = new GameService(repositoryMock.Object);
+
+            try
+            {
+                sut.SaveGame(null);
+            }
+            catch (NullReferenceException)
+            {
+                Assert.True(true);
+                return;
+            }
+
+            Assert.True(false);
+        }
+
+        [Fact]
         public void Should_Add_If_Not_Exists()
         {
             var game = new Game();
@@ -21,7 +41,7 @@ namespace Domain.Services.Tests
             repositoryMock.Setup(x => x.Get(5)).Returns<Game>(null).Verifiable();
             repositoryMock.Setup(x => x.Add(game)).Verifiable();
             repositoryMock.Setup(x => x.Save()).Verifiable();
-            
+
             var sut = new GameService(repositoryMock.Object);
             sut.SaveGame(game);
 
