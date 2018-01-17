@@ -2,8 +2,9 @@
 using DomainServices.Interfaces;
 using DomainServices.Interfaces.Infraestructure;
 using DomainServices.Services;
+using Infraestructure.Database;
 using Infraestructure.Persistence.Repositories;
-using KPMG.Tax.Portal.TaxRay.Mappings;
+using Infraestructure.Reflection;
 using Microsoft.Extensions.DependencyInjection;
 
 
@@ -24,6 +25,7 @@ namespace Application.API.Infraestructure
 
         private void RegisterInfraestructure(IServiceCollection services)
         {
+            services.AddScoped<DatabaseContext, DatabaseContext>();
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             services.AddScoped<IMapper, Mapper>();
         }

@@ -1,4 +1,5 @@
 ﻿using Domain.Persistence.Repositories;
+using Infraestructure.Database;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -11,9 +12,9 @@ namespace Infraestructure.Persistence.Repositories
 {
     public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
-        protected DbContext _context;
+        protected DatabaseContext _context;
 
-        public GenericRepository(DbContext context)
+        public GenericRepository(DatabaseContext context)
         {
             _context = context;
         }

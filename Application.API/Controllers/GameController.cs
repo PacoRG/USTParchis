@@ -3,10 +3,11 @@ using Domain.Model;
 using DomainServices.Interfaces;
 using DomainServices.Interfaces.Infraestructure;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 
 namespace Application.API.Controllers
 {
-    [Route("parchisAPI/[controller]")]
+    [Route("api/[controller]")]
     public class GameController : Controller
     {
         private IGameService _gameService;
@@ -20,11 +21,16 @@ namespace Application.API.Controllers
             _mapper = mapper;
         }
 
-        [HttpPost]
-        public void Save(GameViewModel gameVM)
+        [HttpGet]
+        public IEnumerable<string> Get()
         {
+            var gameVM = new GameViewModel();
+            gameVM.Name = "MyGame";
+
             var game = _mapper.Map<Game>(gameVM);
             _gameService.SaveGame(game);
+
+            return null;
         }
     }
 }

@@ -1,10 +1,9 @@
-﻿using System;
+﻿using DomainServices.Interfaces.Infraestructure;
+using System;
+using System.Reflection;
 
-namespace KPMG.Tax.Portal.TaxRay.Mappings
+namespace Infraestructure.Reflection
 {
-    using DomainServices.Interfaces.Infraestructure;
-    using System.Reflection;
-
     public class Mapper : IMapper
     {
         public D Map<D>(object from) where D : new()

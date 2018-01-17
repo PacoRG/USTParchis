@@ -5,7 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Mapping\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
 
@@ -25,7 +24,7 @@
     <ProjectReference Include="..\Domain.Persistence\Infraestructure.Persistence.csproj" />
     <ProjectReference Include="..\DomainServices.Interfaces\DomainServices.Interfaces.csproj" />
     <ProjectReference Include="..\DomainServices.Services\DomainServices.Services.csproj" />
-    <ProjectReference Include="..\Infraestructure.Utils\Infraestructure.Utils.csproj" />
+    <ProjectReference Include="..\Infraestructure.Reflection\Infraestructure.Reflection.csproj" />
   </ItemGroup>
 
 </Project>
