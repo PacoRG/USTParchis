@@ -1,6 +1,7 @@
 ﻿using Domain.Model.Base;
 using Domain.Model.Enums;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Domain.Model

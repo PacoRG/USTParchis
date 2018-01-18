@@ -22,7 +22,7 @@ namespace DomainServices.Services
         {
             if (game == null) throw new NullReferenceException(nameof(game));
 
-            if(GameExists(game))
+            if (GameExists(game))
             {
                 game.ModifiedAt = DateTime.Now;
                 _gameRepository.Update(game, game.Id);
