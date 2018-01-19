@@ -1,39 +1,42 @@
-﻿
-using System;
+﻿using Microsoft.Extensions.Localization;
+using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Infraestructure.API.Services
 {
     public class JsonStringLocalizer : IStringLocalizer
     {
         string _resourdeRelativePath;
+        string _typeName;
+
         CultureInfo _cultureInfo;
         JObject _resourceCache;
 
         public JsonStringLocalizer(
             string resourdeRelativePath, 
+            string typeName,
             CultureInfo cultureInfo)
         {
+            _typeName = typeName;
             _resourdeRelativePath = resourdeRelativePath;
             _cultureInfo = cultureInfo;
         }
 
         JObject GetResource()
         {
+
             if (_resourceCache == null)
             {
                 string tag = _cultureInfo.Name;
 
-                string filePath = $"{_resourdeRelativePath}/{tag}.json";
+                string filePath = $"{_resourdeRelativePath}/{_typeName}-{tag}.json";
 
                 string json = File.Exists(filePath) ?
                     File.ReadAllText(filePath, Encoding.Unicode) :
-                    "{}";
+                    "{ }";
 
                 _resourceCache = JObject.Parse(json);
             }
@@ -60,7 +63,7 @@ namespace Infraestructure.API.Services
 
                 if (resourceExists)
                 {
-                    if (arguments == null)
+                    if (arguments != null)
                     {
                         value = string.Format(value, arguments);
                     }
@@ -86,7 +89,7 @@ namespace Infraestructure.API.Services
 
         public IStringLocalizer WithCulture(CultureInfo culture)
         {
-            return new JsonStringLocalizer(_resourdeRelativePath, culture);
+            return new JsonStringLocalizer(_resourdeRelativePath, _typeName, culture);
         }
     }
 }

@@ -1,10 +1,13 @@
 ﻿using Application.API.Infraestructure;
 using Infraestructure.Database;
+using Infraestructure.Internationalization;
+using Infraestructure.Internationalization.Json;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Localization;
 using System.Reflection;
 
 namespace Application.API
@@ -28,8 +31,14 @@ namespace Application.API
                     sqlOptions.MigrationsAssembly("Infraestructure.Persistence")));
 
             services.AddMvc();
+            services.AddSingleton<IStringLocalizerFactory, JsonStringLocalizerFactory>();
+            services.AddTransient(typeof(IStringLocalizer<>), typeof(StringLocalizer<>));
 
-            services.AddLocalization(options => { options.ResourcesPath = "Resources"; });
+            services.Configure<JsonLocalizationOptions>(options => {
+                options.ResourcePath = "Resources";
+                options.SharedResourceName = "Shared";
+            });
+
             servcieRegister.Register(services);
         }
 

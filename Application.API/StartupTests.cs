@@ -1,10 +1,13 @@
 ﻿using Application.API.Infraestructure;
 using Infraestructure.Database;
+using Infraestructure.Internationalization;
+using Infraestructure.Internationalization.Json;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Localization;
 using System.Reflection;
 
 namespace Application.API
@@ -27,6 +30,13 @@ namespace Application.API
                 options.UseInMemoryDatabase("MyTestDatabase"));
 
             services.AddMvc();
+            services.AddSingleton<IStringLocalizerFactory, JsonStringLocalizerFactory>();
+            services.AddTransient(typeof(IStringLocalizer<>), typeof(StringLocalizer<>));
+
+            services.Configure<JsonLocalizationOptions>(options => {
+                options.ResourcePath = "Resources";
+                options.SharedResourceName = "Shared";
+            });
 
             servcieRegister.Register(services);
         }
