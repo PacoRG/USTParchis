@@ -1,5 +1,9 @@
 using Application.API.Tests.Utils;
 using Application.ViewModels;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
@@ -37,7 +41,10 @@ namespace Application.API.Tests
 
             var responseString = await response.Content.ReadAsStringAsync();
 
+            var parsedResult = JsonConvert.DeserializeObject <List<ValidationResultViewModel>> (responseString);
+
             Assert.Equal(0, testContext.Database.Games.Count());
+            Assert.Equal("The Name is fucking required", parsedResult.First().Message);
         }
     }
 }

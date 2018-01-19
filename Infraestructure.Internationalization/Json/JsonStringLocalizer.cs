@@ -25,20 +25,27 @@ namespace Infraestructure.API.Services
             _cultureInfo = cultureInfo;
         }
 
-        JObject GetResource()
+        JObject GetResource(CultureInfo culture)
         {
 
             if (_resourceCache == null)
             {
-                string tag = _cultureInfo.Name;
+                string tag = culture.Name;
 
-                string filePath = $"{_resourdeRelativePath}/{_typeName}-{tag}.json";
+                string filePath = $"./{_resourdeRelativePath}/{_typeName}-{tag}.json";
 
-                string json = File.Exists(filePath) ?
-                    File.ReadAllText(filePath, Encoding.Unicode) :
-                    "{ }";
-
-                _resourceCache = JObject.Parse(json);
+                if (File.Exists(filePath))
+                {
+                    return JObject.Parse(File.ReadAllText(filePath, Encoding.Unicode));
+                }
+                else if (culture.Parent != null && culture.Parent.TwoLetterISOLanguageName != "iv")
+                {
+                    return this.GetResource(_cultureInfo.Parent);
+                }
+                else
+                {
+                    return JObject.Parse("{}");
+                }
             }
 
             return _resourceCache;
@@ -56,7 +63,7 @@ namespace Infraestructure.API.Services
         {
             get
             {
-                var resources = GetResource();
+                var resources = GetResource(_cultureInfo);
                 string value = resources.Value<string>(name);
 
                 bool resourceExists = !string.IsNullOrWhiteSpace(value);
@@ -79,7 +86,7 @@ namespace Infraestructure.API.Services
         }
         public IEnumerable<LocalizedString> GetAllStrings(bool includeParentCultures)
         {
-            var resources = GetResource();
+            var resources = GetResource(_cultureInfo);
 
             foreach(var pair in resources)
             {

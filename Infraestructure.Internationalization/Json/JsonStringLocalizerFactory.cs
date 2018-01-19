@@ -3,6 +3,7 @@ using Infraestructure.Internationalization.Json;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Reflection;
 
@@ -10,6 +11,8 @@ namespace Infraestructure.Internationalization
 {
     public class JsonStringLocalizerFactory : IStringLocalizerFactory
     {
+        Dictionary<string, IStringLocalizer> _localizersCache;
+
         string _resourceRelativePath;
         string _sharedResourceName;
 
@@ -17,20 +20,32 @@ namespace Infraestructure.Internationalization
         {
             _resourceRelativePath = options.Value?.ResourcePath ?? string.Empty;
             _sharedResourceName = options.Value?.SharedResourceName ?? string.Empty;
+
+            _localizersCache = new Dictionary<string, IStringLocalizer>();
+
         }
 
         public IStringLocalizer Create(Type resourceSource)
         {
-            if (resourceSource == null)
-                return new JsonStringLocalizer(
-                    _resourceRelativePath,
-                    _sharedResourceName,
-                    CultureInfo.CurrentUICulture);
+            IStringLocalizer localizer;
+            string requestType = _sharedResourceName;
 
-            return new JsonStringLocalizer(
-                _resourceRelativePath,
-                resourceSource.Name,
-                CultureInfo.CurrentUICulture);
+            if (resourceSource != null)
+            {
+                requestType = resourceSource.Name;
+            }
+
+            if (!_localizersCache.TryGetValue(requestType + "-" + CultureInfo.CurrentUICulture, out localizer))
+            {
+                _localizersCache.Add(
+                    requestType + "-" + CultureInfo.CurrentUICulture,
+                    new JsonStringLocalizer(
+                        _resourceRelativePath,
+                        requestType,
+                        CultureInfo.CurrentUICulture));
+            }
+
+            return _localizersCache.GetValueOrDefault(requestType + "-" + CultureInfo.CurrentUICulture);
         }
 
         public IStringLocalizer Create(string baseName, string location)

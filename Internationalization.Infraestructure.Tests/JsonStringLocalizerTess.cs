@@ -1,6 +1,4 @@
 using Infraestructure.API.Services;
-using Microsoft.Extensions.Localization;
-using System;
 using System.Globalization;
 using Xunit;
 
@@ -12,7 +10,7 @@ namespace Internationalization.Infraestructure.Tests
         [Fact]
         public void Should_Retun_Key_On_Not_Existing_Resource()
         {
-            var sut = new JsonStringLocalizer("./Resources", sharedResource, new CultureInfo("en"));
+            var sut = new JsonStringLocalizer("Resources", sharedResource, new CultureInfo("en"));
 
             var localizedResult = sut["MyKey"];
 
@@ -23,7 +21,7 @@ namespace Internationalization.Infraestructure.Tests
         [Fact]
         public void Should_Retun_Translation_On_Correct()
         {
-            var sut = new JsonStringLocalizer("./Resources", sharedResource, new CultureInfo("es"));
+            var sut = new JsonStringLocalizer("Resources", sharedResource, new CultureInfo("es"));
 
             var localizedResult = sut["MyKey"];
 
@@ -34,7 +32,7 @@ namespace Internationalization.Infraestructure.Tests
         [Fact]
         public void Should_Retun_Key_On_File_Existing_And_No_Key()
         {
-            var sut = new JsonStringLocalizer("./Resources", sharedResource, new CultureInfo("es"));
+            var sut = new JsonStringLocalizer("Resources", sharedResource, new CultureInfo("es"));
 
             var localizedResult = sut["MyKey2"];
 
@@ -44,7 +42,7 @@ namespace Internationalization.Infraestructure.Tests
         [Fact]
         public void Should_Retun_Paremetrized_Value()
         {
-            var sut = new JsonStringLocalizer("./Resources", sharedResource, new CultureInfo("es"));
+            var sut = new JsonStringLocalizer("Resources", sharedResource, new CultureInfo("es"));
 
             var localizedResult = sut["ParamKey", new object[] { "1"}];
 
@@ -55,7 +53,7 @@ namespace Internationalization.Infraestructure.Tests
         [Fact]
         public void Should_Retun_All_Keys()
         {
-            var sut = new JsonStringLocalizer("./Resources", sharedResource,  new CultureInfo("es"));
+            var sut = new JsonStringLocalizer("Resources", sharedResource,  new CultureInfo("es"));
 
             var localizer = sut.WithCulture(new CultureInfo("pt"));
             var localized = localizer["MyKey"];

@@ -35,7 +35,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain.Model.Tests", "Domai
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infraestructure.Internationalization", "Infraestructure.Internationalization\Infraestructure.Internationalization.csproj", "{D29DE339-DC6B-4E33-A5D4-1A4E87FB505F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Internationalization.Infraestructure.Tests", "Internationalization.Infraestructure.Tests\Internationalization.Infraestructure.Tests.csproj", "{57D1886D-4230-486D-A5ED-3DCE97CCA274}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Internationalization.Infraestructure.Tests", "Internationalization.Infraestructure.Tests\Internationalization.Infraestructure.Tests.csproj", "{57D1886D-4230-486D-A5ED-3DCE97CCA274}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

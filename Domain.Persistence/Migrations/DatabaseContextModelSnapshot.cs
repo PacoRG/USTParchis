@@ -32,6 +32,9 @@ namespace Infraestructure.Persistence.Migrations
 
                     b.Property<DateTime>("ModifiedAt");
 
+                    b.Property<string>("MyProp")
+                        .IsRequired();
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(255);
