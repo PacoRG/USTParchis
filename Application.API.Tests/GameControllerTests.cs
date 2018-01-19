@@ -25,5 +25,19 @@ namespace Application.API.Tests
 
             Assert.Equal(1, testContext.Database.Games.Count());
         }
+
+        [Fact]
+        public async Task Should_Return_Validation_Errors()
+        {
+            var testContext = new TestContext();
+            var game = new GameViewModel();
+
+            var response = await testContext.Client.PostAsJsonAsync(game, "/api/Game");
+            response.EnsureSuccessStatusCode();
+
+            var responseString = await response.Content.ReadAsStringAsync();
+
+            Assert.Equal(0, testContext.Database.Games.Count());
+        }
     }
 }

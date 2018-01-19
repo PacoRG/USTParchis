@@ -1,9 +1,11 @@
 ﻿using Domain.Model;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace DomainServices.Interfaces
 {
     public interface IGameService
     {
-        void SaveGame(Game game);
+        List<ValidationResult> SaveGame(Game game);
     }
 }

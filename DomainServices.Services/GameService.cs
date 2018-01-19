@@ -2,8 +2,10 @@
 using Domain.Model.Enums;
 using Domain.Persistence.Repositories;
 using DomainServices.Interfaces;
+using DomainServices.Services.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 
 namespace DomainServices.Services
@@ -12,15 +14,24 @@ namespace DomainServices.Services
     public class GameService : IGameService
     {
         private IGenericRepository<Game> _gameRepository;
+        private IValidationService _validationService;
 
-        public GameService(IGenericRepository<Game> gameRepository)
+        public GameService(
+            IGenericRepository<Game> gameRepository,
+            IValidationService validationService)
         {
             _gameRepository = gameRepository;
+            _validationService = validationService;
         }
 
-        public void SaveGame(Game game)
+        public List<ValidationResult> SaveGame(Game game)
         {
-            if (game == null) throw new NullReferenceException(nameof(game));
+            if (game == null)
+                throw new NullReferenceException(nameof(game));
+
+            var validationResult = _validationService.Validate(game);
+            if (validationResult.Count > 0)
+                return validationResult;
 
             if (GameExists(game))
             {
@@ -38,6 +49,7 @@ namespace DomainServices.Services
             }
 
             _gameRepository.Save();
+            return new List<ValidationResult>();
         }
 
         private bool GameExists(Game game)
@@ -46,4 +58,3 @@ namespace DomainServices.Services
         }
     }
 }
- 

@@ -21,10 +21,13 @@ namespace Application.API.Controllers
         }
 
         [HttpPost]
-        public void Post(GameViewModel gameVM)
+        public JsonResult Post([FromBody]GameViewModel gameVM)
         {
             var game = _mapper.Map<Game>(gameVM);
-            _gameService.SaveGame(game);
+
+            var validationResult = _gameService.SaveGame(game);
+
+            return this.Json(validationResult);
         }
     }
 }

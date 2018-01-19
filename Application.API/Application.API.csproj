@@ -28,4 +28,19 @@
     <ProjectReference Include="..\Infraestructure.Reflection\Infraestructure.Reflection.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Update="Resources\SharedResource.es.Designer.cs">
+      <DependentUpon>SharedResource.es.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Resources\SharedResource.es.resx">
+      <LastGenOutput>SharedResource.en.Designer.cs</LastGenOutput>
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+
 </Project>

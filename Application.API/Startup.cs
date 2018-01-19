@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System.Reflection;
 
 namespace Application.API
 {
@@ -27,6 +28,8 @@ namespace Application.API
                     sqlOptions.MigrationsAssembly("Infraestructure.Persistence")));
 
             services.AddMvc();
+
+            services.AddLocalization(options => { options.ResourcesPath = "Resources"; });
             servcieRegister.Register(services);
         }
 

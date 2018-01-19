@@ -1,10 +1,26 @@
 ﻿using DomainServices.Services;
+using Microsoft.Extensions.Localization;
+using Moq;
 using Xunit;
 
 namespace Domain.Services.Tests
 {
+
     public class ValidatorServiceTests
     {
+        private Mock<IStringLocalizer> BuildLoclaizer()
+        {
+            var localizedString = new LocalizedString("Test", "MyStringValue");
+
+            var stringLocalizer = new Mock<IStringLocalizer>();
+
+            stringLocalizer.Setup(x => x[It.IsAny<string>()])
+                .Returns(localizedString)
+                .Verifiable();
+
+            return stringLocalizer;
+        }
+
         [Fact]
         public void Should_Be_Invalid_On_DataAnnotation_Break()
         {

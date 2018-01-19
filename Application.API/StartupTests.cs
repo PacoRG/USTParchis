@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System.Reflection;
 
 namespace Application.API
 {
@@ -26,6 +27,7 @@ namespace Application.API
                 options.UseInMemoryDatabase("MyTestDatabase"));
 
             services.AddMvc();
+
             servcieRegister.Register(services);
         }
 
