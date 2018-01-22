@@ -41,11 +41,6 @@ namespace Application.API
                 options.SharedResourceName = "Shared";
             });
 
-            services.Configure<MvcOptions>(options =>
-            {
-                options.ModelMetadataDetailsProviders.Add(new CustomValidationMetadataProvider());
-            });
-
             servcieRegister.Register(services);
         }
 

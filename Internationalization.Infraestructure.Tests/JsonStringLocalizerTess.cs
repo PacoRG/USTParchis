@@ -1,4 +1,5 @@
 using Infraestructure.API.Services;
+using Infraestructure.Tests.Utils;
 using System.Globalization;
 using Xunit;
 
@@ -21,7 +22,7 @@ namespace Infraestructure.Tests
         [Fact]
         public void Should_Retun_Translation_On_Correct()
         {
-            var sut = new JsonStringLocalizer("Resources", "JsonTestEntity", new CultureInfo("es"));
+            var sut = new JsonStringLocalizer("Resources", typeof(JsonTestEntity).FullName, new CultureInfo("es"));
 
             var localizedResult = sut["MyKey"];
 
@@ -42,7 +43,7 @@ namespace Infraestructure.Tests
         [Fact]
         public void Should_Retun_Paremetrized_Value()
         {
-            var sut = new JsonStringLocalizer("Resources", "JsonTestEntity", new CultureInfo("es"));
+            var sut = new JsonStringLocalizer("Resources", typeof(JsonTestEntity).FullName, new CultureInfo("es"));
 
             var localizedResult = sut["ParamKey", new object[] { "1"}];
 
@@ -53,7 +54,7 @@ namespace Infraestructure.Tests
         [Fact]
         public void Should_Retun_All_Keys()
         {
-            var sut = new JsonStringLocalizer("Resources", "JsonTestEntity",  new CultureInfo("es"));
+            var sut = new JsonStringLocalizer("Resources", typeof(JsonTestEntity).FullName,  new CultureInfo("es"));
 
             var localizer = sut.WithCulture(new CultureInfo("es"));
             var localized = localizer["MyKey"];

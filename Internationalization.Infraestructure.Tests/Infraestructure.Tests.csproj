@@ -20,10 +20,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Resources\JsonTestEntity-es.json">
+    <None Update="Resources\Infraestructure.Tests.Utils\JsonTestEntity-es.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Resources\TestValidationModel-es.json">
+    <None Update="Resources\Infraestructure.Tests.Utils\TestValidationModel-es.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Resources\Shared-es.json">

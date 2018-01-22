@@ -40,10 +40,7 @@ namespace Application.API.Controllers
 
             foreach(var result in validationResult)
             {
-                resultsViewModels.Add(new ValidationResultViewModel {
-                    Message = result.ErrorMessage,
-                    FieldName = result.MemberNames.First()
-                });
+                resultsViewModels.Add(_mapper.Map<ValidationResultViewModel>(result));
             }
 
             return this.Ok(resultsViewModels);

@@ -24,7 +24,7 @@ namespace DomainServices.Services
             _validationService = validationService;
         }
 
-        public List<ValidationResult> SaveGame(Game game)
+        public List<ValidationModel> SaveGame(Game game)
         {
             if (game == null)
                 throw new NullReferenceException(nameof(game));
@@ -49,7 +49,7 @@ namespace DomainServices.Services
             }
 
             _gameRepository.Save();
-            return new List<ValidationResult>();
+            return new List<ValidationModel>();
         }
 
         private bool GameExists(Game game)

@@ -93,7 +93,7 @@ namespace Infraestructure.Tests
 
             var validationMessages = sut.Validate(testModel);
 
-            Assert.Equal("El campo Mi propiedad requerida por defecto es requerido", validationMessages.First().ErrorMessage);
+            Assert.Equal("El campo Mi propiedad requerida por defecto es requerido", validationMessages.First().Message);
         }
 
         [Fact]
@@ -112,7 +112,7 @@ namespace Infraestructure.Tests
 
             var validationMessages = sut.Validate(testModel);
 
-            Assert.Equal("El campo Mi propiedad requerida es custom requerido", validationMessages.First().ErrorMessage);
+            Assert.Equal("El campo Mi propiedad requerida es custom requerido", validationMessages.First().Message);
         }
 
         [Fact]
@@ -131,7 +131,7 @@ namespace Infraestructure.Tests
 
             var validationMessages = sut.Validate(testModel);
 
-            Assert.Equal("El campo Mi propiedad custom tiene un error de validacion", validationMessages.First().ErrorMessage);
+            Assert.Equal("El campo Mi propiedad custom tiene un error de validacion", validationMessages.First().Message);
         }
 
         [Fact]
@@ -151,7 +151,28 @@ namespace Infraestructure.Tests
 
             var validationMessages = sut.Validate(testModel);
 
-            Assert.Equal("El campo NestedProperty es requerido", validationMessages.First().ErrorMessage);
+            Assert.Equal("El campo NestedProperty es requerido", validationMessages.First().Message);
+        }
+
+        [Fact]
+        public void Should_Be_Invalid_On_Nested_List_Break()
+        {
+            var testModel = new TestValidationModel
+            {
+                RequiredProperty = "RequiredProperty",
+                StandardProperty = "StandardProperty",
+                CustomProperty = "Paco",
+                RequiredPropertyDefault = "RequiredPropertyDefault"
+            };
+            testModel.NestedList.Add(new TestValidationModelNested());
+
+            Thread.CurrentThread.CurrentUICulture = CultureInfo.CreateSpecificCulture("es");
+
+            var sut = new ValidationService(this.CreateFactory());
+
+            var validationMessages = sut.Validate(testModel);
+
+            Assert.Equal("El campo NestedProperty es requerido", validationMessages.First().Message);
         }
     }
 }

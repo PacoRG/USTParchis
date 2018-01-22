@@ -11,6 +11,7 @@ namespace Infraestructure.API.Services
     {
         string _resourdeRelativePath;
         string _typeName;
+        
 
         CultureInfo _cultureInfo;
         JObject _resourceCache;
@@ -30,9 +31,7 @@ namespace Infraestructure.API.Services
 
             if (_resourceCache == null)
             {
-                string tag = culture.Name;
-
-                string filePath = $"./{_resourdeRelativePath}/{_typeName}-{tag}.json";
+                string filePath = this.GetFilePath(culture);
 
                 if (File.Exists(filePath))
                 {
@@ -97,6 +96,26 @@ namespace Infraestructure.API.Services
         public IStringLocalizer WithCulture(CultureInfo culture)
         {
             return new JsonStringLocalizer(_resourdeRelativePath, _typeName, culture);
+        }
+
+        private string GetFilePath(CultureInfo culture)
+        {
+            string tag = culture.Name;
+          
+            string[] splits = _typeName.Split('.');
+
+            string filePath = string.Empty;
+
+            if (splits.Length > 1)
+            {
+                var namspace = _typeName.Substring(0, _typeName.Substring(0, _typeName.Length - 1).LastIndexOf('.'));
+                filePath = $"./{_resourdeRelativePath}/{namspace}/{splits[splits.Length - 1]}-{tag}.json";
+            }
+            else
+            {
+                filePath = $"./{_resourdeRelativePath}/{_typeName}-{tag}.json";
+            }
+            return filePath;
         }
     }
 }

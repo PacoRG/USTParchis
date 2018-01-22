@@ -32,7 +32,7 @@ namespace Infraestructure.Internationalization
 
             if (resourceSource != null)
             {
-                requestType = resourceSource.Name;
+                requestType = resourceSource.FullName;
             }
 
             if (!_localizersCache.TryGetValue(requestType + "-" + CultureInfo.CurrentUICulture, out localizer))

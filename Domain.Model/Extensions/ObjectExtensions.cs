@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
@@ -11,5 +12,17 @@ namespace Domain.Model.Extensions
         {
             return obj != null && obj.GetType().GetCustomAttribute(typeof(DataEntityAttribute)) != null;
         }
+
+        public static bool IsCollection(this object obj)
+        {
+            if (obj == null) return false;
+            return (obj is IList &&
+                   obj.GetType().IsGenericType &&
+                   obj.GetType().GetGenericTypeDefinition().IsAssignableFrom(typeof(List<>)))
+                   ||
+                   (obj is ICollection &&
+                   obj.GetType().IsGenericType &&
+                   obj.GetType().GetGenericTypeDefinition().IsAssignableFrom(typeof(ICollection<>)));
+        }      
     }
 }

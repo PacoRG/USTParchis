@@ -33,7 +33,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Update="Resources\ErrorMessage-en.json">
+    <Content Update="Resources\Domain.Model\Game-en.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Resources\Domain.Model\Game-es.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Update="Resources\Shared-en.json">

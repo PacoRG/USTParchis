@@ -6,6 +6,6 @@ namespace DomainServices.Interfaces
 {
     public interface IGameService
     {
-        List<ValidationResult> SaveGame(Game game);
+        List<ValidationModel> SaveGame(Game game);
     }
 }

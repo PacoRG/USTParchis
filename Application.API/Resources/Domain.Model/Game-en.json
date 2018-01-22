@@ -1,3 +1,4 @@
 ﻿{
+  "nameRequired": "The Name is fucking required",
   "RequiredError": "El campo {0} es obligatorio"
 }

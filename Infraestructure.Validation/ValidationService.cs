@@ -4,6 +4,7 @@ using DomainServices.Services.Interfaces;
 using Infraestructure.Reflection;
 using Microsoft.Extensions.Localization;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -29,16 +30,16 @@ namespace Infraestructure.Validation
             };
         }
 
-        public List<ValidationResult> Validate(object entity)
+        public List<ValidationModel> Validate(object entity)
         {
             var context = new ValidationContext(entity, serviceProvider: null, items: null);
-            var totalResults = new List<ValidationResult>();
+            var totalResults = new List<ValidationModel>();
 
-            ValidateObject(context, entity, totalResults);
+            this.ValidateObject(context, entity, totalResults);
             return totalResults;
         }
 
-        private void ValidateObject(ValidationContext context, object entity, List<ValidationResult> validationResults)
+        private void ValidateObject(ValidationContext context, object entity, List<ValidationModel> validationResults)
         {
             if (entity == null) return;
 
@@ -51,19 +52,42 @@ namespace Infraestructure.Validation
                 if (propertyValue.IsDataEntity())
                     this.ValidateObject(context, propertyValue, validationResults);
 
-                var attributes = property.GetCustomAttributes();
-                foreach (var attribute in attributes)
-                {
-                    ValidateAttributeForProperty(context, entity, validationResults, attribute, property);
-                }
+                if (propertyValue.IsCollection())
+                    this.ValidateList(context, propertyValue, validationResults);
 
+                this.ValidateAttributes(context, entity, validationResults, property);
             }
+        }
+
+        private void ValidateList(
+            ValidationContext context,
+            object propertyValue,
+            List<ValidationModel> validationResults)
+        {
+            foreach (var item in (IEnumerable)propertyValue)
+            {
+                this.ValidateObject(context, item, validationResults);
+            }
+        }
+
+        private void  ValidateAttributes(
+            ValidationContext context,
+            object entity,
+            List<ValidationModel> validationResults,
+            PropertyInfo property)
+        {
+            var attributes = property.GetCustomAttributes();
+            foreach (var attribute in attributes)
+            {
+                ValidateAttributeForProperty(context, entity, validationResults, attribute, property);
+            }
+
         }
 
         private void ValidateAttributeForProperty(
             ValidationContext context,
             object entity,
-            List<ValidationResult> validationResults,
+            List<ValidationModel> validationResults,
             Attribute attribute,
             PropertyInfo property)
         {
@@ -95,7 +119,14 @@ namespace Infraestructure.Validation
             }
 
             var membersName = new string[] { property.Name };
-            var validationResult = new ValidationResult(errorMessage, membersName);
+            var validationResult = new ValidationModel
+            (
+                errorMessage,
+                entity.GetType().Name,
+                entity.GetType().Namespace,
+                string.Empty
+            );
+
             validationResults.Add(validationResult);
 
         }
@@ -115,8 +146,7 @@ namespace Infraestructure.Validation
         {
             if (string.IsNullOrEmpty(errorMessage))
             {
-                string dictionaryValue;
-                _errorMessagesMap.TryGetValue(attribute.GetType(), out dictionaryValue);
+                _errorMessagesMap.TryGetValue(attribute.GetType(), out string dictionaryValue);
                 errorMessage = _sharedLocalizer[dictionaryValue, memberNames];
             }
             else
