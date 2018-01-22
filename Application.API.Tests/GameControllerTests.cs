@@ -44,7 +44,7 @@ namespace Application.API.Tests
             var parsedResult = JsonConvert.DeserializeObject <List<ValidationResultViewModel>> (responseString);
 
             Assert.Equal(0, testContext.Database.Games.Count());
-            Assert.Equal("The Name is fucking required", parsedResult.First().Message);
+            Assert.Equal("El campo Name es obligatorio", parsedResult.First().Message);
         }
     }
 }

@@ -41,7 +41,7 @@ namespace Application.API.Controllers
             foreach(var result in validationResult)
             {
                 resultsViewModels.Add(new ValidationResultViewModel {
-                    Message = _sharedLocalizer[result.ErrorMessage],
+                    Message = result.ErrorMessage,
                     FieldName = result.MemberNames.First()
                 });
             }

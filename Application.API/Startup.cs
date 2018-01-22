@@ -1,9 +1,12 @@
 ﻿using Application.API.Infraestructure;
+using Infraestructure.API.Services;
 using Infraestructure.Database;
 using Infraestructure.Internationalization;
 using Infraestructure.Internationalization.Json;
+using Infraestructure.Validation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -32,11 +35,16 @@ namespace Application.API
 
             services.AddMvc();
             services.AddSingleton<IStringLocalizerFactory, JsonStringLocalizerFactory>();
-            services.AddTransient(typeof(IStringLocalizer<>), typeof(StringLocalizer<>));
+            services.AddTransient(typeof(IStringLocalizer), typeof(JsonStringLocalizer));
 
             services.Configure<JsonLocalizationOptions>(options => {
                 options.ResourcePath = "Resources";
                 options.SharedResourceName = "Shared";
+            });
+
+            services.Configure<MvcOptions>(options =>
+            {
+                options.ModelMetadataDetailsProviders.Add(new CustomValidationMetadataProvider());
             });
 
             servcieRegister.Register(services);

@@ -21,11 +21,11 @@ namespace Internationalization.Infraestructure.Tests
         [Fact]
         public void Should_Retun_Translation_On_Correct()
         {
-            var sut = new JsonStringLocalizer("Resources", sharedResource, new CultureInfo("es"));
+            var sut = new JsonStringLocalizer("Resources", "JsonTestEntity", new CultureInfo("es"));
 
             var localizedResult = sut["MyKey"];
 
-            Assert.Equal("MyValor", localizedResult.Value);
+            Assert.Equal("Mi valor", localizedResult.Value);
             Assert.False(localizedResult.ResourceNotFound);
         }
 
@@ -42,7 +42,7 @@ namespace Internationalization.Infraestructure.Tests
         [Fact]
         public void Should_Retun_Paremetrized_Value()
         {
-            var sut = new JsonStringLocalizer("Resources", sharedResource, new CultureInfo("es"));
+            var sut = new JsonStringLocalizer("Resources", "JsonTestEntity", new CultureInfo("es"));
 
             var localizedResult = sut["ParamKey", new object[] { "1"}];
 
@@ -53,12 +53,12 @@ namespace Internationalization.Infraestructure.Tests
         [Fact]
         public void Should_Retun_All_Keys()
         {
-            var sut = new JsonStringLocalizer("Resources", sharedResource,  new CultureInfo("es"));
+            var sut = new JsonStringLocalizer("Resources", "JsonTestEntity",  new CultureInfo("es"));
 
-            var localizer = sut.WithCulture(new CultureInfo("pt"));
+            var localizer = sut.WithCulture(new CultureInfo("es"));
             var localized = localizer["MyKey"];
 
-            Assert.Equal("MMyValor", localized.Value);
+            Assert.Equal("Mi valor", localized.Value);
             Assert.False(localized.ResourceNotFound);
         }
     }

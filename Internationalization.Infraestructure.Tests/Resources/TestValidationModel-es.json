@@ -1,0 +1,7 @@
+﻿{
+  "CustomError": "El campo {0} tiene un error de validacion",
+  "RequiredProperty": "Mi propiedad requerida",
+  "RequiredPropertyDefault": "Mi propiedad requerida por defecto",
+  "CustomProperty" :  "Mi propiedad custom"
+
+}

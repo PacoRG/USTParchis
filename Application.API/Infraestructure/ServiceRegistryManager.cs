@@ -6,6 +6,7 @@ using DomainServices.Services.Interfaces;
 using Infraestructure.Database;
 using Infraestructure.Persistence.Repositories;
 using Infraestructure.Reflection;
+using Infraestructure.Validation;
 using Microsoft.Extensions.DependencyInjection;
 
 

@@ -42,7 +42,7 @@ namespace Internationalization.Infraestructure.Tests
             var sut = new JsonStringLocalizerFactory(someOptions);
 
             var localizer = sut.Create(typeof(JsonTestEntity));
-            var result = localizer["MyKeyJson"];
+            var result = localizer["MyKey"];
 
             Assert.True(!result.ResourceNotFound);
         }

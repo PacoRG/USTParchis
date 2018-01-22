@@ -16,13 +16,14 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Infraestructure.Internationalization\Infraestructure.Internationalization.csproj" />
+    <ProjectReference Include="..\Infraestructure.Validation\Infraestructure.Validation.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <None Update="Resources\JsonTestEntity-es.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Resources\Shared-pt.json">
+    <None Update="Resources\TestValidationModel-es.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Resources\Shared-es.json">

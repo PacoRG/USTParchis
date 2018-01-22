@@ -1,16 +1,18 @@
 ﻿using Domain.Services.Tests.Utils;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
 
 namespace Domain.Services.Tests
 {
     public class TestValidationModel
     {
-        [Required]
-        [Custom]
+        [Required(ErrorMessage = "CustomRequiredError")]
         public string RequiredProperty { get; set; }
+
+        [Required]
+        public string RequiredPropertyDefault { get; set; }
+
+        [Custom(ErrorMessage = "CustomError")]
+        public string CustomProperty { get; set; }
 
         public string StandardProperty { get; set; }
     }

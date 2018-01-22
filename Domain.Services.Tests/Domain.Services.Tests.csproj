@@ -18,6 +18,7 @@
     <ProjectReference Include="..\Domain.Model\Domain.Model.csproj" />
     <ProjectReference Include="..\DomainServices.Interfaces\DomainServices.Interfaces.csproj" />
     <ProjectReference Include="..\DomainServices.Services\DomainServices.Services.csproj" />
+    <ProjectReference Include="..\Infraestructure.Validation\Infraestructure.Validation.csproj" />
   </ItemGroup>
 
   <ItemGroup>
