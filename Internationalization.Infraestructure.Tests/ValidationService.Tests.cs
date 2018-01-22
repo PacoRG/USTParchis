@@ -1,5 +1,6 @@
 ﻿using Infraestructure.Internationalization;
 using Infraestructure.Internationalization.Json;
+using Infraestructure.Tests.Utils;
 using Infraestructure.Validation;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
@@ -8,7 +9,7 @@ using System.Linq;
 using System.Threading;
 using Xunit;
 
-namespace Domain.Services.Tests
+namespace Infraestructure.Tests
 {
 
     public class ValidatorServiceTests
@@ -131,6 +132,26 @@ namespace Domain.Services.Tests
             var validationMessages = sut.Validate(testModel);
 
             Assert.Equal("El campo Mi propiedad custom tiene un error de validacion", validationMessages.First().ErrorMessage);
+        }
+
+        [Fact]
+        public void Should_Be_Invalid_On_Nested_Break()
+        {
+            var testModel = new TestValidationModel
+            {
+                RequiredProperty = "RequiredProperty",
+                StandardProperty = "StandardProperty",
+                CustomProperty = "Paco",
+                RequiredPropertyDefault = "RequiredPropertyDefault",
+                Nested = new TestValidationModelNested()
+            };
+            Thread.CurrentThread.CurrentUICulture = CultureInfo.CreateSpecificCulture("es");
+
+            var sut = new ValidationService(this.CreateFactory());
+
+            var validationMessages = sut.Validate(testModel);
+
+            Assert.Equal("El campo NestedProperty es requerido", validationMessages.First().ErrorMessage);
         }
     }
 }

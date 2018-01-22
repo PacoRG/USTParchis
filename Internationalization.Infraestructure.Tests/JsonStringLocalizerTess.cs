@@ -2,7 +2,7 @@ using Infraestructure.API.Services;
 using System.Globalization;
 using Xunit;
 
-namespace Internationalization.Infraestructure.Tests
+namespace Infraestructure.Tests
 {
     public class JsonStringLocalizerTests
     {

@@ -1,10 +1,13 @@
-﻿using Domain.Services.Tests.Utils;
+﻿using Domain.Model;
 using System.ComponentModel.DataAnnotations;
 
-namespace Domain.Services.Tests
+namespace Infraestructure.Tests.Utils
 {
+    [DataEntity]
     public class TestValidationModel
     {
+        public TestValidationModelNested Nested { get; set; }
+
         [Required(ErrorMessage = "CustomRequiredError")]
         public string RequiredProperty { get; set; }
 

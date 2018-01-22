@@ -1,4 +1,7 @@
-﻿using DomainServices.Services.Interfaces;
+﻿using Domain.Model;
+using Domain.Model.Extensions;
+using DomainServices.Services.Interfaces;
+using Infraestructure.Reflection;
 using Microsoft.Extensions.Localization;
 using System;
 using System.Collections.Generic;
@@ -37,22 +40,30 @@ namespace Infraestructure.Validation
 
         private void ValidateObject(ValidationContext context, object entity, List<ValidationResult> validationResults)
         {
+            if (entity == null) return;
+
             var objectType = entity.GetType();
 
             foreach (var property in objectType.GetProperties())
             {
+                var propertyValue = property.GetValue(entity);
+
+                if (propertyValue.IsDataEntity())
+                    this.ValidateObject(context, propertyValue, validationResults);
+
                 var attributes = property.GetCustomAttributes();
                 foreach (var attribute in attributes)
                 {
                     ValidateAttributeForProperty(context, entity, validationResults, attribute, property);
                 }
+
             }
         }
 
         private void ValidateAttributeForProperty(
-            ValidationContext context, 
-            object entity, 
-            List<ValidationResult> validationResults, 
+            ValidationContext context,
+            object entity,
+            List<ValidationResult> validationResults,
             Attribute attribute,
             PropertyInfo property)
         {
@@ -62,7 +73,7 @@ namespace Infraestructure.Validation
             if (validationAttribute == null) return;
 
             bool isValid = Validator.TryValidateValue(
-                property.GetValue(entity), 
+                property.GetValue(entity),
                 context,
                 new List<ValidationResult>(),
                 validatAttributes);
@@ -94,10 +105,10 @@ namespace Infraestructure.Validation
             return _errorMessagesMap.TryGetValue(attribute.GetType(), out dictionaryValue);
         }
 
-        private string LocalizePropertyName(PropertyInfo property,object entity)
+        private string LocalizePropertyName(PropertyInfo property, object entity)
         {
             var localizer = _stringLocalizerFactory.Create(entity.GetType());
-            return  localizer[property.Name];
+            return localizer[property.Name];
         }
 
         private string LocalizedPredefinedAttribute(string errorMessage, Attribute attribute, params object[] memberNames)
@@ -116,7 +127,7 @@ namespace Infraestructure.Validation
             return errorMessage;
         }
 
-    
+
         private string LocalizeEntityAttribute(string errorMessage, object entity, params object[] memberNames)
         {
             var localizer = _stringLocalizerFactory.Create(entity.GetType());

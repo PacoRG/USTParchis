@@ -1,4 +1,4 @@
-﻿namespace Internationalization.Infraestructure.Tests
+﻿namespace Infraestructure.Tests.Utils
 {
     public class JsonTestEntity
     {

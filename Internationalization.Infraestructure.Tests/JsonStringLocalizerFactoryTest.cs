@@ -1,10 +1,11 @@
 using Infraestructure.Internationalization;
 using Infraestructure.Internationalization.Json;
+using Infraestructure.Tests.Utils;
 using Microsoft.Extensions.Options;
 using System.Globalization;
 using Xunit;
 
-namespace Internationalization.Infraestructure.Tests
+namespace Infraestructure.Tests
 {
     public class JsonStringLocalizerFactoryTests
     {

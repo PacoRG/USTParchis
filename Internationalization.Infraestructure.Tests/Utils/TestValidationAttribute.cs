@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 
-namespace Domain.Services.Tests.Utils
+namespace Infraestructure.Tests.Utils
 {
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field, AllowMultiple = false)]
     sealed public class CustomAttribute : ValidationAttribute
