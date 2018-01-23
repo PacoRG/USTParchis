@@ -40,25 +40,7 @@ namespace Application.API
 
             servcieRegister.Register(services);
 
-            services.Configure<JsonLocalizationOptions>(options =>
-            {
-                options.ResourcePath = "Resources";
-                options.SharedResourceName = "Shared";
-            });
-
-
-            services.Configure<RequestLocalizationOptions>(options =>
-            {
-                var supportedCultures = new[]
-                {
-                    new CultureInfo("es"),
-                    new CultureInfo("en")
-                };
-
-                options.DefaultRequestCulture = new RequestCulture("en-US");
-                options.SupportedCultures = supportedCultures;
-                options.SupportedUICultures = supportedCultures;
-            });
+            servcieRegister.ConfigureLocalization(services);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -1,6 +1,8 @@
 ﻿using Infraestructure.Database;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
+using System;
+using System.Net;
 using System.Net.Http;
 
 namespace Application.API.Tests
@@ -16,6 +18,8 @@ namespace Application.API.Tests
         {
             _server = new TestServer(new WebHostBuilder()
                 .UseStartup<StartupTests>());
+
+
             _client = _server.CreateClient();
             _dbContext = (DatabaseContext)Server.Host.Services.GetService(typeof(DatabaseContext));
         }

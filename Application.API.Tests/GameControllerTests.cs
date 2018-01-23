@@ -23,7 +23,7 @@ namespace Application.API.Tests
             var testContext = new TestContext();
             var game = new GameViewModel { Name = "MyName" };
 
-            var response = await testContext.Client.MakeRequest(HttpMethod.Post,game, "/api/Game");
+            var response = await testContext.Client.MakeRequestWithHeader(HttpMethod.Post,game, "/api/Game");
             response.EnsureSuccessStatusCode();
 
             var responseString = await response.Content.ReadAsStringAsync();
@@ -38,7 +38,7 @@ namespace Application.API.Tests
             var game = new GameViewModel();
 
 
-            var response = await testContext.Client.MakeRequest(HttpMethod.Post, game, "/api/Game");
+            var response = await testContext.Client.MakeRequestWithHeader(HttpMethod.Post, game, "/api/Game");
             response.EnsureSuccessStatusCode();
 
             var responseString = await response.Content.ReadAsStringAsync();

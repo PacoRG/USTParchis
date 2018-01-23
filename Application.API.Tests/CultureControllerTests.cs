@@ -25,7 +25,7 @@ namespace Application.API.Tests
             var testContext = new TestContext();
             var game = new GameViewModel();
 
-            var response = await testContext.Client.MakeRequest(HttpMethod.Get, game, "/api/Culture");
+            var response = await testContext.Client.MakeRequestWithHeader(HttpMethod.Get, game, "/api/Culture");
             response.EnsureSuccessStatusCode();
 
             var responseString = await response.Content.ReadAsStringAsync();
@@ -40,7 +40,22 @@ namespace Application.API.Tests
             var testContext = new TestContext();
             var game = new GameViewModel();
 
-            var response = await testContext.Client.MakeRequest(HttpMethod.Get, game, "/api/Culture", "es");
+            var response = await testContext.Client.MakeRequestWithHeader(HttpMethod.Get, game, "/api/Culture", "es");
+            response.EnsureSuccessStatusCode();
+
+            var responseString = await response.Content.ReadAsStringAsync();
+
+            var parsedResult = JsonConvert.DeserializeObject<string>(responseString);
+            Assert.Equal("Esto es una prueba", parsedResult);
+        }
+
+        [Fact]
+        public async Task Should_Return_Name_Validation_On_DifferentCulture_WithCookie()
+        {
+            var testContext = new TestContext();
+            var game = new GameViewModel();
+
+            var response = await testContext.Client.MakeRequestWithCookie(HttpMethod.Get, game, "/api/Culture","es");
             response.EnsureSuccessStatusCode();
 
             var responseString = await response.Content.ReadAsStringAsync();
