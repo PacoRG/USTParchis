@@ -17,7 +17,7 @@ namespace Domain.Services.Tests
         public void Should_Break_If_Null_Game_Is_Passed()
         {
             var repositoryMock = new Mock<IGenericRepository<Game>>();
-            var validationMock = new Mock<IValidationService>();
+            var validationMock = new Mock<IValidationService<Game>>();
             validationMock.Setup(x => x.Validate(It.IsAny<Game>())).Returns(new List<ValidationModel>());
 
             var sut = new GameService(repositoryMock.Object, validationMock.Object) ;
@@ -44,7 +44,7 @@ namespace Domain.Services.Tests
                 Name = "DoremIpusm"
             };
 
-            var validationMock = new Mock<IValidationService>();
+            var validationMock = new Mock<IValidationService<Game>>();
             validationMock.Setup(x => x.Validate(It.IsAny<Game>())).Returns(new List<ValidationModel>());
             var repositoryMock = new Mock<IGenericRepository<Game>>();
             repositoryMock.Setup(x => x.Get(5)).Returns<Game>(null).Verifiable();
@@ -68,7 +68,7 @@ namespace Domain.Services.Tests
                 ModifiedAt = DateTime.MinValue
             };
 
-            var validationMock = new Mock<IValidationService>();
+            var validationMock = new Mock<IValidationService<Game>>();
             validationMock.Setup(x => x.Validate(It.IsAny<Game>())).Returns(new List<ValidationModel>());
             var repositoryMock = new Mock<IGenericRepository<Game>>();
             repositoryMock.Setup(x => x.Get(5)).Returns<Game>(null);
@@ -92,7 +92,7 @@ namespace Domain.Services.Tests
                 Name = "DoremIpusm"
             };
 
-            var validationMock = new Mock<IValidationService>();
+            var validationMock = new Mock<IValidationService<Game>>();
             validationMock.Setup(x => x.Validate(It.IsAny<Game>())).Returns(new List<ValidationModel>());
             var repositoryMock = new Mock<IGenericRepository<Game>>();
             repositoryMock.Setup(x => x.Get(5)).Returns(game).Verifiable();
@@ -115,7 +115,7 @@ namespace Domain.Services.Tests
                 ModifiedAt = DateTime.MinValue
             };
 
-            var validationMock = new Mock<IValidationService>();
+            var validationMock = new Mock<IValidationService<Game>>();
             validationMock.Setup(x => x.Validate(It.IsAny<Game>())).Returns(new List<ValidationModel>());
             var repositoryMock = new Mock<IGenericRepository<Game>>();
             repositoryMock.Setup(x => x.Get(5)).Returns(game).Verifiable();
@@ -137,7 +137,7 @@ namespace Domain.Services.Tests
                 new ValidationModel("asd", "", "", "")
             };
 
-            var validationMock = new Mock<IValidationService>();
+            var validationMock = new Mock<IValidationService<Game>>();
             validationMock.Setup(x => 
                 x.Validate(It.IsAny<Game>()))
                 .Returns(errorList);
@@ -160,7 +160,7 @@ namespace Domain.Services.Tests
             var errorList = new List<ValidationModel>();
 
 
-            var validationMock = new Mock<IValidationService>();
+            var validationMock = new Mock<IValidationService<Game>>();
             validationMock.Setup(x =>
                 x.Validate(It.IsAny<Game>()))
                 .Returns(errorList)

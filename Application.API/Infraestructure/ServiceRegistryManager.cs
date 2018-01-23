@@ -1,4 +1,6 @@
-﻿using Domain.Persistence.Repositories;
+﻿using Domain.Model;
+using Domain.Persistence.Repositories;
+using Domain.Services;
 using DomainServices.Interfaces;
 using DomainServices.Interfaces.Infraestructure;
 using DomainServices.Services;
@@ -54,11 +56,13 @@ namespace Application.API.Infraestructure
         private void RegisterDomain(IServiceCollection services)
         {
             services.AddScoped<IGameService, GameService>();
-            services.AddScoped<IValidationService, ValidationService>();
+            services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+            services.AddScoped<IValidationService<Game>, GameValidator>();
         }
 
         private void RegisterInfraestructure(IServiceCollection services)
         {
+            services.AddScoped<IValidationService, ValidationService>();
             services.AddSingleton<IStringLocalizerFactory, JsonStringLocalizerFactory>();
             services.AddTransient(typeof(IStringLocalizer), typeof(JsonStringLocalizer));
             services.AddScoped<DatabaseContext, DatabaseContext>();

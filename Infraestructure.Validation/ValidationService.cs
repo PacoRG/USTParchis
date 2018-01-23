@@ -39,7 +39,12 @@ namespace Infraestructure.Validation
             return totalResults;
         }
 
-        private void ValidateObject(ValidationContext context, object entity, List<ValidationModel> validationResults)
+        private void ValidateObject(
+            ValidationContext context, 
+            object entity, 
+            List<ValidationModel> 
+            validationResults,
+            string propertiesPath = "")
         {
             if (entity == null) return;
 
@@ -48,25 +53,27 @@ namespace Infraestructure.Validation
             foreach (var property in objectType.GetProperties())
             {
                 var propertyValue = property.GetValue(entity);
+                var concatenatedPath = ConcatenatePath(propertiesPath, property.Name);
 
                 if (propertyValue.IsDataEntity())
-                    this.ValidateObject(context, propertyValue, validationResults);
+                    this.ValidateObject(context, propertyValue, validationResults, concatenatedPath);
 
                 if (propertyValue.IsCollection())
-                    this.ValidateList(context, propertyValue, validationResults);
+                    this.ValidateList(context, propertyValue, validationResults, concatenatedPath);
 
-                this.ValidateAttributes(context, entity, validationResults, property);
+                this.ValidateAttributes(context, entity, validationResults, property, propertiesPath);
             }
         }
 
         private void ValidateList(
             ValidationContext context,
             object propertyValue,
-            List<ValidationModel> validationResults)
+            List<ValidationModel> validationResults,
+            string propertiesPath)
         {
             foreach (var item in (IEnumerable)propertyValue)
             {
-                this.ValidateObject(context, item, validationResults);
+                this.ValidateObject(context, item, validationResults, propertiesPath);
             }
         }
 
@@ -74,12 +81,13 @@ namespace Infraestructure.Validation
             ValidationContext context,
             object entity,
             List<ValidationModel> validationResults,
-            PropertyInfo property)
+            PropertyInfo property,
+            string propertiesPath)
         {
             var attributes = property.GetCustomAttributes();
             foreach (var attribute in attributes)
             {
-                ValidateAttributeForProperty(context, entity, validationResults, attribute, property);
+                ValidateAttributeForProperty(context, entity, validationResults, attribute, property, propertiesPath);
             }
 
         }
@@ -89,7 +97,8 @@ namespace Infraestructure.Validation
             object entity,
             List<ValidationModel> validationResults,
             Attribute attribute,
-            PropertyInfo property)
+            PropertyInfo property,
+            string propertiesPath)
         {
             var validationAttribute = attribute as ValidationAttribute;
             var validatAttributes = new ValidationAttribute[] { validationAttribute };
@@ -124,8 +133,8 @@ namespace Infraestructure.Validation
                 errorMessage,
                 entity.GetType().Name,
                 entity.GetType().Namespace,
-                string.Empty
-            );
+                ConcatenatePath(propertiesPath,propertyName)
+            ); 
 
             validationResults.Add(validationResult);
 
@@ -164,6 +173,14 @@ namespace Infraestructure.Validation
             errorMessage = localizer[errorMessage, memberNames];
 
             return errorMessage;
+        }
+
+        private string ConcatenatePath(string origin, string newPath)
+        {
+            if (string.IsNullOrEmpty(origin))
+                return newPath;
+
+            return origin + "." + newPath;
         }
     }
 }

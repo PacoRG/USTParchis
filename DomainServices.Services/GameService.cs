@@ -14,11 +14,11 @@ namespace DomainServices.Services
     public class GameService : IGameService
     {
         private IGenericRepository<Game> _gameRepository;
-        private IValidationService _validationService;
+        private IValidationService<Game> _validationService;
 
         public GameService(
             IGenericRepository<Game> gameRepository,
-            IValidationService validationService)
+            IValidationService<Game> validationService)
         {
             _gameRepository = gameRepository;
             _validationService = validationService;

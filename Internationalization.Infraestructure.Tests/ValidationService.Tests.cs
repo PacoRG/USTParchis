@@ -44,6 +44,24 @@ namespace Infraestructure.Tests
         }
 
         [Fact]
+        public void Should_Set_Correctly_Identification_Base()
+        {
+            var testModel = new TestValidationModel
+            {
+                RequiredProperty = null,
+                StandardProperty = "StandardProperty",
+                RequiredPropertyDefault = "RequiredPropertyDefault",
+                CustomProperty = "Paco"
+            };
+
+            var sut = new ValidationService(this.CreateFactory());
+
+            var validationMessages = sut.Validate(testModel);
+
+            Assert.Equal("RequiredProperty",validationMessages.First().Identifier);
+        }
+
+        [Fact]
         public void Should_Be_Valid_On_No_Break()
         {
             var testModel = new TestValidationModel {
@@ -155,6 +173,26 @@ namespace Infraestructure.Tests
         }
 
         [Fact]
+        public void Should_Set_Identifier_Correctly_On_Nested()
+        {
+            var testModel = new TestValidationModel
+            {
+                RequiredProperty = "RequiredProperty",
+                StandardProperty = "StandardProperty",
+                CustomProperty = "Paco",
+                RequiredPropertyDefault = "RequiredPropertyDefault",
+                Nested = new TestValidationModelNested()
+            };
+            Thread.CurrentThread.CurrentUICulture = CultureInfo.CreateSpecificCulture("es");
+
+            var sut = new ValidationService(this.CreateFactory());
+
+            var validationMessages = sut.Validate(testModel);
+
+            Assert.Equal("Nested.NestedProperty", validationMessages.First().Identifier);
+        }
+
+        [Fact]
         public void Should_Be_Invalid_On_Nested_List_Break()
         {
             var testModel = new TestValidationModel
@@ -173,6 +211,27 @@ namespace Infraestructure.Tests
             var validationMessages = sut.Validate(testModel);
 
             Assert.Equal("El campo NestedProperty es requerido", validationMessages.First().Message);
+        }
+
+        [Fact]
+        public void Should_Set_Identifier_Correctly_On_Nested_List()
+        {
+            var testModel = new TestValidationModel
+            {
+                RequiredProperty = "RequiredProperty",
+                StandardProperty = "StandardProperty",
+                CustomProperty = "Paco",
+                RequiredPropertyDefault = "RequiredPropertyDefault"
+            };
+            testModel.NestedList.Add(new TestValidationModelNested());
+
+            Thread.CurrentThread.CurrentUICulture = CultureInfo.CreateSpecificCulture("es");
+
+            var sut = new ValidationService(this.CreateFactory());
+
+            var validationMessages = sut.Validate(testModel);
+
+            Assert.Equal("NestedList.NestedProperty", validationMessages.First().Identifier);
         }
     }
 }
