@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Globalization;
 using System.Linq;
 
 namespace Application.API.Controllers
@@ -34,6 +35,9 @@ namespace Application.API.Controllers
         public IActionResult Post([FromBody]GameViewModel gameVM)
         {
             var game = _mapper.Map<Game>(gameVM);
+
+            var c1 = CultureInfo.CurrentCulture;
+            var c2 = CultureInfo.CurrentUICulture;
 
             var validationResult = _gameService.SaveGame(game);
             var resultsViewModels = new List<ValidationResultViewModel>();

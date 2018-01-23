@@ -6,12 +6,15 @@ using Infraestructure.Internationalization.Json;
 using Infraestructure.Validation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Localization;
+using System.Globalization;
 using System.Reflection;
+using System.Threading.Tasks;
 
 namespace Application.API
 {
@@ -32,16 +35,30 @@ namespace Application.API
             services.AddDbContext<DatabaseContext>(options =>
                 options.UseInMemoryDatabase("MyTestDatabase"));
 
+            services.AddLocalization();
             services.AddMvc();
-            services.AddSingleton<IStringLocalizerFactory, JsonStringLocalizerFactory>();
-            services.AddTransient(typeof(IStringLocalizer), typeof(JsonStringLocalizer));
 
-            services.Configure<JsonLocalizationOptions>(options => {
+            servcieRegister.Register(services);
+
+            services.Configure<JsonLocalizationOptions>(options =>
+            {
                 options.ResourcePath = "Resources";
                 options.SharedResourceName = "Shared";
             });
 
-            servcieRegister.Register(services);
+
+            services.Configure<RequestLocalizationOptions>(options =>
+            {
+                var supportedCultures = new[]
+                {
+                    new CultureInfo("es"),
+                    new CultureInfo("en")
+                };
+
+                options.DefaultRequestCulture = new RequestCulture("en-US");
+                options.SupportedCultures = supportedCultures;
+                options.SupportedUICultures = supportedCultures;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -51,6 +68,7 @@ namespace Application.API
             {
                 app.UseDeveloperExceptionPage();
             }
+            app.UseRequestLocalization();
 
             app.UseMvc();
         }

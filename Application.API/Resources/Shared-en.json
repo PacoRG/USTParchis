@@ -1,4 +1,5 @@
 ﻿{
   "nameRequired": "The Name is fucking required",
-  "RequiredError": "El campo {0} es obligatorio"
+  "RequiredError": "The field {0} is required",
+  "MyTestString" :  "This is a test"
 }

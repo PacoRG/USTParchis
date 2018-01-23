@@ -11,42 +11,42 @@ using Xunit;
 
 namespace Application.API.Tests
 {
-    public class GameControllerTests
+    public class CultureControllerTests
     {
-        public GameControllerTests()
+        public CultureControllerTests()
         {
         }
 
-        [Fact]
-        public async Task Should_Save_Game()
-        {
-            var testContext = new TestContext();
-            var game = new GameViewModel { Name = "MyName" };
-
-            var response = await testContext.Client.MakeRequest(HttpMethod.Post,game, "/api/Game");
-            response.EnsureSuccessStatusCode();
-
-            var responseString = await response.Content.ReadAsStringAsync();
-
-            Assert.Equal(1, testContext.Database.Games.Count());
-        }
+       
 
         [Fact]
-        public async Task Should_Return_Name_Validation_Error()
+        public async Task Should_Return_Name_Validation_On_DefaultCulture()
         {
             var testContext = new TestContext();
             var game = new GameViewModel();
 
-
-            var response = await testContext.Client.MakeRequest(HttpMethod.Post, game, "/api/Game");
+            var response = await testContext.Client.MakeRequest(HttpMethod.Get, game, "/api/Culture");
             response.EnsureSuccessStatusCode();
 
             var responseString = await response.Content.ReadAsStringAsync();
 
-            var parsedResult = JsonConvert.DeserializeObject<List<ValidationResultViewModel>>(responseString);
+            var parsedResult = JsonConvert.DeserializeObject<string>(responseString);
+            Assert.Equal("This is a test", parsedResult);
+        }
 
-            Assert.Equal(0, testContext.Database.Games.Count());
-            Assert.Equal("The field My Name is required", parsedResult.First().Message);
+        [Fact]
+        public async Task Should_Return_Name_Validation_On_DifferentCulture()
+        {
+            var testContext = new TestContext();
+            var game = new GameViewModel();
+
+            var response = await testContext.Client.MakeRequest(HttpMethod.Get, game, "/api/Culture", "es");
+            response.EnsureSuccessStatusCode();
+
+            var responseString = await response.Content.ReadAsStringAsync();
+
+            var parsedResult = JsonConvert.DeserializeObject<string>(responseString);
+            Assert.Equal("Esto es una prueba", parsedResult);
         }
     }
 }

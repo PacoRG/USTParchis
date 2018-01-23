@@ -1,17 +1,10 @@
 ﻿using Application.API.Infraestructure;
-using Infraestructure.API.Services;
 using Infraestructure.Database;
-using Infraestructure.Internationalization;
-using Infraestructure.Internationalization.Json;
-using Infraestructure.Validation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Localization;
-using System.Reflection;
 
 namespace Application.API
 {
@@ -33,16 +26,10 @@ namespace Application.API
                 options.UseSqlServer(this.Configuration.GetConnectionString("USTParchis"), sqlOptions =>
                     sqlOptions.MigrationsAssembly("Infraestructure.Persistence")));
 
-            services.AddMvc();
-            services.AddSingleton<IStringLocalizerFactory, JsonStringLocalizerFactory>();
-            services.AddTransient(typeof(IStringLocalizer), typeof(JsonStringLocalizer));
-
-            services.Configure<JsonLocalizationOptions>(options => {
-                options.ResourcePath = "Resources";
-                options.SharedResourceName = "Shared";
-            });
-
             servcieRegister.Register(services);
+            servcieRegister.ConfigureLocalization(services);
+
+            services.AddMvc();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -53,6 +40,7 @@ namespace Application.API
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseRequestLocalization();
             app.UseMvc();
         }
     }
