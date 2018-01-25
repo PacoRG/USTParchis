@@ -11,6 +11,14 @@ namespace Infraestructure.Database
 
         public DbSet<Game> Games { get; set; }
 
+        public DbSet<Song> Songs { get; set; }
+
+        public DbSet<Sheet> Sheets { get; set; }
+
+        public DbSet<Author> Authors { get; set; }
+
+        public DbSet<Link> Links { get; set; }
+
         public override int SaveChanges()
         {
             return base.SaveChanges();

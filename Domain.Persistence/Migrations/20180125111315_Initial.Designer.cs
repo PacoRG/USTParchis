@@ -12,9 +12,10 @@ using System;
 namespace Infraestructure.Persistence.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20180125111315_Initial")]
+    partial class Initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -87,13 +88,9 @@ namespace Infraestructure.Persistence.Migrations
 
                     b.Property<bool>("IsAnnotated");
 
-                    b.Property<int?>("SongId");
-
                     b.Property<int>("Voice");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("SongId");
 
                     b.ToTable("Sheets");
                 });
@@ -123,13 +120,6 @@ namespace Infraestructure.Persistence.Migrations
                 {
                     b.HasOne("Domain.Model.Song")
                         .WithMany("Videos")
-                        .HasForeignKey("SongId");
-                });
-
-            modelBuilder.Entity("Domain.Model.Sheet", b =>
-                {
-                    b.HasOne("Domain.Model.Song")
-                        .WithMany("Sheets")
                         .HasForeignKey("SongId");
                 });
 

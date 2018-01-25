@@ -16,7 +16,7 @@ namespace Infraestructure.Database
 
             var builder = new DbContextOptionsBuilder<DatabaseContext>();
 
-            builder.UseSqlServer(config.GetConnectionString("USTParchis"), sqlOptions =>
+            builder.UseSqlServer(config.GetConnectionString("DatabaseManagement"), sqlOptions =>
                 sqlOptions.MigrationsAssembly("Infraestructure.Persistence"));
 
             return new DatabaseContext(builder.Options);

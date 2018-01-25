@@ -24,7 +24,7 @@ namespace Application.API
             var servcieRegister = new ServiceRegistryManager();
 
             services.AddDbContext<DatabaseContext>(options =>
-                options.UseSqlServer(this.Configuration.GetConnectionString("USTParchis"), sqlOptions =>
+                options.UseSqlServer(this.Configuration.GetConnectionString("DatabaseManagement"), sqlOptions =>
                     sqlOptions.MigrationsAssembly("Infraestructure.Persistence")));
 
             services.AddMvc();
