@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace DomainServices.Services
 {
@@ -24,7 +25,7 @@ namespace DomainServices.Services
             _validationService = validationService;
         }
 
-        public List<ValidationModel> SaveGame(Game game)
+        public async Task<List<ValidationModel>> SaveGame(Game game)
         {
             if (game == null)
                 throw new NullReferenceException(nameof(game));
@@ -33,10 +34,12 @@ namespace DomainServices.Services
             if (validationResult.Count > 0)
                 return validationResult;
 
-            if (GameExists(game))
+            var gameExists = await GameExists(game);
+
+            if (gameExists)
             {
                 game.ModifiedAt = DateTime.Now;
-                _gameRepository.Update(game, game.Id);
+                await _gameRepository.UpdateAsyn(game, game.Id);
             }
             else
             {
@@ -45,16 +48,16 @@ namespace DomainServices.Services
                 game.CreatedAt = now;
                 game.State = GameState.InProgress;
 
-                _gameRepository.Add(game);
+                await _gameRepository.AddAsyn(game);
             }
 
-            _gameRepository.Save();
+            await _gameRepository.SaveAsync();
             return new List<ValidationModel>();
         }
 
-        private bool GameExists(Game game)
+        private async Task<bool> GameExists(Game game)
         {
-            return _gameRepository.Get(game.Id) != null;
+            return await _gameRepository.GetAsync(game.Id) != null;
         }
     }
 }

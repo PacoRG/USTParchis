@@ -5,10 +5,12 @@ using DomainServices.Interfaces.Infraestructure;
 using Infraestructure.Reflection;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
+using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Application.API.Controllers
 {
@@ -19,12 +21,15 @@ namespace Application.API.Controllers
         private IMapper _mapper;
         private IStringLocalizerFactory _localizerFactory;
         private IStringLocalizer _sharedLocalizer;
+        private ILogger<GameController> _logger;
 
         public GameController(
             IGameService gameService,
             IMapper mapper,
-            IStringLocalizerFactory localizerFactory)
+            IStringLocalizerFactory localizerFactory,
+            ILogger<GameController> logger)
         {
+            _logger = logger;
             _gameService = gameService;
             _mapper = mapper;
             _localizerFactory = localizerFactory;
@@ -32,14 +37,13 @@ namespace Application.API.Controllers
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody]GameViewModel gameVM)
+        public async Task<IActionResult> Post([FromBody]GameViewModel gameVM)
         {
+            _logger.LogInformation(gameVM.ToString());
+
             var game = _mapper.Map<Game>(gameVM);
 
-            var c1 = CultureInfo.CurrentCulture;
-            var c2 = CultureInfo.CurrentUICulture;
-
-            var validationResult = _gameService.SaveGame(game);
+            var validationResult = await _gameService.SaveGame(game);
             var resultsViewModels = new List<ValidationResultViewModel>();
 
             foreach(var result in validationResult)
