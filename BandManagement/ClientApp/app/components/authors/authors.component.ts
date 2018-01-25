@@ -1,23 +1,17 @@
 import { Component, Inject } from '@angular/core';
 import { Http } from '@angular/http';
+import { AuthorModel } from '../../models/author.model';
 
 @Component({
     selector: 'authors',
     templateUrl: './authors.component.html'
 })
 export class AuthorsComponent {
-    public forecasts: WeatherForecast[];
+    public authors: AuthorModel[];
 
-    constructor(http: Http, @Inject('BASE_URL') baseUrl: string) {
-        http.get(baseUrl + 'api/SampleData/WeatherForecasts').subscribe(result => {
-            this.forecasts = result.json() as WeatherForecast[];
+    constructor(http: Http, @Inject('API_URL') baseUrl: string) {
+        http.get(baseUrl + 'api/Authors').subscribe(result => {
+            this.authors = result.json() as AuthorModel[];
         }, error => console.error(error));
     }
-}
-
-interface WeatherForecast {
-    dateFormatted: string;
-    temperatureC: number;
-    temperatureF: number;
-    summary: string;
 }

@@ -4,7 +4,9 @@ using Domain.Services;
 using DomainServices.Interfaces;
 using DomainServices.Interfaces.Infraestructure;
 using DomainServices.Services;
+using DomainServices.Services.Band;
 using DomainServices.Services.Interfaces;
+using DomainServices.Services.Interfaces.Domain;
 using Infraestructure.API.Services;
 using Infraestructure.Database;
 using Infraestructure.Internationalization;
@@ -17,8 +19,6 @@ using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Localization;
 using System.Globalization;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Application.API.Infraestructure
 {
@@ -56,7 +56,7 @@ namespace Application.API.Infraestructure
         private void RegisterDomain(IServiceCollection services)
         {
             services.AddScoped<IGameService, GameService>();
-            services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+            services.AddScoped<IAuthorService, AuthorService>();
             services.AddScoped<IValidationService<Game>, GameValidator>();
         }
 
