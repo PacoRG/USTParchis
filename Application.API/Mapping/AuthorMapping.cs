@@ -7,19 +7,19 @@ namespace Application.API.Mapping
 {
     public static class AuthorMapping
     {
-        public static ICollection<AuthorViemModel> ToViewModel(this ICollection<Author> authors, IMapper mapper)
+        public static ICollection<AuthorViewModel> ToViewModel(this ICollection<Author> authors, IMapper mapper)
         {
-            var authorsVM = new List<AuthorViemModel>();
+            var authorsVM = new List<AuthorViewModel>();
 
             foreach(var author in authors)
             {
-                authorsVM.Add(mapper.Map<AuthorViemModel>(author));
+                authorsVM.Add(mapper.Map<AuthorViewModel>(author));
             }
 
             return authorsVM;
         }
 
-        public static ICollection<Author> ToDomain(this ICollection<AuthorViemModel> authors, IMapper mapper)
+        public static ICollection<Author> ToDomain(this ICollection<AuthorViewModel> authors, IMapper mapper)
         {
             var authorsVM = new List<Author>();
 

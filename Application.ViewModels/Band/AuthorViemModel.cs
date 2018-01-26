@@ -1,6 +1,6 @@
 ﻿namespace Application.ViewModels.Band
 {
-    public class AuthorViemModel
+    public class AuthorViewModel
     {
         public int Id { get; set; }
 

@@ -44,7 +44,12 @@ namespace Application.API
             app.UseCors(builder =>
                builder.WithOrigins("http://localhost:8082/"));
             app.UseRequestLocalization();
-            app.UseMvc();
+            app.UseMvc(routes =>
+            {
+                routes.MapRoute(
+                    name: "default",
+                    template: "{controller}/{action}/{id?}");
+            });
         }
     }
 }

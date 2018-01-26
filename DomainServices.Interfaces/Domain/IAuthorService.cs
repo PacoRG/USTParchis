@@ -7,5 +7,9 @@ namespace DomainServices.Services.Interfaces.Domain
     public interface IAuthorService
     {
         Task<ICollection<Author>> GetAll();
+
+        Task Delete(int authorId);
+
+        Task<List<ValidationModel>> Save(Author author);
     }
 }

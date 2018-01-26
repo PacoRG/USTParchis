@@ -80,10 +80,11 @@ namespace Infraestructure.Persistence.Repositories
             _context.Set<T>().Remove(entity);
         }
 
-        public virtual async Task<int> DeleteAsyn(T entity)
+        public virtual async Task DeleteAsyn(int id)
         {
+            var entity = await GetAsync(id);
             _context.Set<T>().Remove(entity);
-            return await _context.SaveChangesAsync();
+            return;
         }
 
         public virtual T Update(T t, object key)

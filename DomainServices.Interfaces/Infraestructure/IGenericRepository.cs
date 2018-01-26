@@ -19,7 +19,7 @@ namespace Domain.Persistence.Repositories
 
             void Delete(T entity);
 
-            Task<int> DeleteAsyn(T entity);
+            Task DeleteAsyn(int id);
 
             void Dispose();
 
