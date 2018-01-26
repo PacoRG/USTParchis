@@ -6,7 +6,7 @@
     "test": "karma start ClientApp/test/karma.conf.js"
   },
   "devDependencies": {
-    "@angular/animations": "4.2.5",
+    "@angular/animations": "^4.2.5",
     "@angular/common": "4.2.5",
     "@angular/compiler": "4.2.5",
     "@angular/compiler-cli": "4.2.5",
@@ -60,6 +60,13 @@
     "zone.js": "0.8.12"
   },
   "dependencies": {
-    "classlist.js": "^1.1.20150312"
-  }
+    "classlist.js": "^1.1.20150312",
+    "primeng": "^5.2.0-rc.2",
+    "font-awesome": "^4.7.0"
+  },
+  "styles": [
+    "../node_modules/font-awesome/css/font-awesome.min.css",
+    "../node_modules/primeng/resources/themes/omega/theme.css",
+    "../node_modules/primeng/resources/primeng.min.css"
+  ]
 }
