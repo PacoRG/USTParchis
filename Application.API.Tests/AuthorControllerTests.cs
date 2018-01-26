@@ -10,19 +10,23 @@ using Xunit;
 
 namespace Application.API.Tests
 {
-    public class AuthorControleerTests
+    public class AuthorControllerTests
     {
+        private TestContext _testContext;
+
+        public AuthorControllerTests()
+        {
+            _testContext = new TestContext();
+        }
 
         [Fact]
         public async Task Should_Get_Authors()
         {
-            var testContext = new TestContext();
-
             var author = new Author { Name = "MyName" };
-            testContext.Database.Add(author);
-            testContext.Database.SaveChanges();
+            _testContext.Database.Add(author);
+            _testContext.Database.SaveChanges();
 
-            var response = await testContext.Client.MakeRequestWithHeader(HttpMethod.Get,"", "/api/Author");
+            var response = await _testContext.Client.MakeRequestWithHeader(HttpMethod.Get,"", "/api/Author");
             response.EnsureSuccessStatusCode();
 
             var responseString = await response.Content.ReadAsStringAsync();

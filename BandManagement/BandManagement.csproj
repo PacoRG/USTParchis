@@ -21,10 +21,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="ClientApp\app\enums\APi.enum.ts" />
     <None Remove="ClientApp\app\models\author.model.ts" />
   </ItemGroup>
 
   <ItemGroup>
+    <TypeScriptCompile Include="ClientApp\app\enums\APi.enum.ts" />
     <TypeScriptCompile Include="ClientApp\app\models\author.model.ts" />
   </ItemGroup>
 

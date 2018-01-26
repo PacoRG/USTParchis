@@ -50,8 +50,10 @@ namespace Application.API
             {
                 app.UseDeveloperExceptionPage();
             }
-            app.UseRequestLocalization();
 
+            app.UseCors(builder =>
+                builder.WithOrigins("http://localhost:8082/"));
+            app.UseRequestLocalization();
             app.UseMvc();
         }
     }
