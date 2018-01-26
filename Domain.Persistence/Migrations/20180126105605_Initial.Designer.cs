@@ -12,8 +12,8 @@ using System;
 namespace Infraestructure.Persistence.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20180125111914_Add_Sheet_Relation")]
-    partial class Add_Sheet_Relation
+    [Migration("20180126105605_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -34,28 +34,6 @@ namespace Infraestructure.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Authors");
-                });
-
-            modelBuilder.Entity("Domain.Model.Game", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<DateTime>("CreatedAt");
-
-                    b.Property<DateTime?>("EndedAt");
-
-                    b.Property<DateTime>("ModifiedAt");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(255);
-
-                    b.Property<int>("State");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Games");
                 });
 
             modelBuilder.Entity("Domain.Model.Link", b =>

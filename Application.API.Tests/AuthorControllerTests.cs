@@ -83,7 +83,7 @@ namespace Application.API.Tests
 
             var parsedResult = JsonConvert.DeserializeObject<List<ValidationResultViewModel>>(responseString);
 
-            Assert.Equal(0, testContext.Database.Games.Count());
+            Assert.Equal(0, testContext.Database.Authors.Count());
             Assert.NotEmpty(parsedResult);
         }
 

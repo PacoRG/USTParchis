@@ -35,28 +35,6 @@ namespace Infraestructure.Persistence.Migrations
                     b.ToTable("Authors");
                 });
 
-            modelBuilder.Entity("Domain.Model.Game", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<DateTime>("CreatedAt");
-
-                    b.Property<DateTime?>("EndedAt");
-
-                    b.Property<DateTime>("ModifiedAt");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(255);
-
-                    b.Property<int>("State");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Games");
-                });
-
             modelBuilder.Entity("Domain.Model.Link", b =>
                 {
                     b.Property<int>("Id")

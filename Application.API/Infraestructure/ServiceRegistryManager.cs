@@ -1,6 +1,5 @@
 ﻿using Domain.Model;
 using Domain.Persistence.Repositories;
-using Domain.Services;
 using DomainServices.Interfaces;
 using DomainServices.Interfaces.Infraestructure;
 using DomainServices.Services;
@@ -55,9 +54,7 @@ namespace Application.API.Infraestructure
 
         private void RegisterDomain(IServiceCollection services)
         {
-            services.AddScoped<IGameService, GameService>();
             services.AddScoped<IAuthorService, AuthorService>();
-            services.AddScoped<IValidationService<Game>, GameValidator>();
         }
 
         private void RegisterInfraestructure(IServiceCollection services)

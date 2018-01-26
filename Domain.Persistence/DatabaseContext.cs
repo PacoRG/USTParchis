@@ -9,8 +9,6 @@ namespace Infraestructure.Database
           : base(options)
         { }
 
-        public DbSet<Game> Games { get; set; }
-
         public DbSet<Song> Songs { get; set; }
 
         public DbSet<Sheet> Sheets { get; set; }
