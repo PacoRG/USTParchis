@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 
-namespace BandManagement.Controllers
+namespace ASPNETCoreAngular.Controllers
 {
     [Route("api/[controller]")]
     public class SampleDataController : Controller
@@ -24,6 +24,12 @@ namespace BandManagement.Controllers
                 TemperatureC = rng.Next(-20, 55),
                 Summary = Summaries[rng.Next(Summaries.Length)]
             });
+        }
+
+        [HttpGet("[action]")]
+        public string[] GetSummaries()
+        {
+            return Summaries;
         }
 
         public class WeatherForecast
