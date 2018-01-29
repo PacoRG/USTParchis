@@ -2,8 +2,7 @@
 import { HttpClient, HttpResponse, HttpHeaders, HttpRequest } from '@angular/common/http';
 
 import { Author } from '../models/author.model';
-import { Observable } from 'rxjs/Observable';
-import "rxjs/Rx";
+
 
 @Injectable()
 export class AuthorsService {
@@ -14,6 +13,7 @@ export class AuthorsService {
 
     private _apiUrl: string;
 
+
     constructor(private http: HttpClient, @Inject('API_URL') apiUrl: string) {
         this._apiUrl = apiUrl;
     }
@@ -22,8 +22,8 @@ export class AuthorsService {
         var getAuthorsUrl = this._apiUrl + this._getAllUrl;
 
         return this.http.get(getAuthorsUrl)
-                    .toPromise()
-                    .then(res => <Author[]> res);;
+            .toPromise()
+            .then(res => <Author[]>res)
     }
 
 }

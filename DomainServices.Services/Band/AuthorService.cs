@@ -26,6 +26,11 @@ namespace DomainServices.Services.Band
             return await _authorRepository.GetAllAsyn();
         }
 
+        public async Task<ICollection<Author>> GetPage(int pageNumber, int recordsPerPage)
+        {
+            return await _authorRepository.GetPageAsyn(pageNumber, recordsPerPage);
+        }
+
         public async Task Delete(int authorId)
         {
             if (await _authorRepository.GetAsync(authorId) == null)

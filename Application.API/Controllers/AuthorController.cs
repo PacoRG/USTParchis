@@ -38,6 +38,15 @@ namespace Application.API.Controllers
             return authorsVM;
         }
 
+        [HttpGet]
+        public async Task<ICollection<AuthorViewModel>> GetPage(int pageNumber, int recordsPerPage)
+        {
+            var authors = await _authorService.GetPage(pageNumber, recordsPerPage);
+            var authorsVM = authors.ToViewModel(_mapper);
+
+            return authorsVM;
+        }
+
         [HttpPost]
         public async Task<IActionResult> Delete(int id)
         {

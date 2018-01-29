@@ -52,7 +52,10 @@ namespace Application.API
             }
 
             app.UseCors(builder =>
-                builder.WithOrigins("http://localhost:8082/"));
+                builder.AllowAnyOrigin()
+                       .AllowAnyMethod()
+                       .AllowAnyHeader());
+
             app.UseRequestLocalization();
             app.UseMvc(routes =>
             {

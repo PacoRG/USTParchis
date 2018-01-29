@@ -1,5 +1,6 @@
 using Application.API.Tests.Utils;
 using Application.ViewModels;
+using Application.ViewModels.Band;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
@@ -23,9 +24,9 @@ namespace Application.API.Tests
         public async Task Should_Return_Name_Validation_On_DefaultCulture()
         {
             var testContext = new TestContext();
-            var game = new GameViewModel();
+            var game = new AuthorViewModel();
 
-            var response = await testContext.Client.MakeRequestWithHeader(HttpMethod.Get, game, "/api/Culture");
+            var response = await testContext.Client.MakeRequestWithHeader(HttpMethod.Get, null, "/api/Culture");
             response.EnsureSuccessStatusCode();
 
             var responseString = await response.Content.ReadAsStringAsync();
@@ -38,9 +39,9 @@ namespace Application.API.Tests
         public async Task Should_Return_Name_Validation_On_DifferentCulture()
         {
             var testContext = new TestContext();
-            var game = new GameViewModel();
+            var game = new AuthorViewModel();
 
-            var response = await testContext.Client.MakeRequestWithHeader(HttpMethod.Get, game, "/api/Culture", "es");
+            var response = await testContext.Client.MakeRequestWithHeader(HttpMethod.Get, null, "/api/Culture", "es");
             response.EnsureSuccessStatusCode();
 
             var responseString = await response.Content.ReadAsStringAsync();
@@ -53,9 +54,8 @@ namespace Application.API.Tests
         public async Task Should_Return_Name_Validation_On_DifferentCulture_WithCookie()
         {
             var testContext = new TestContext();
-            var game = new GameViewModel();
 
-            var response = await testContext.Client.MakeRequestWithCookie(HttpMethod.Get, game, "/api/Culture","es");
+            var response = await testContext.Client.MakeRequestWithCookie(HttpMethod.Get, null, "/api/Culture","es");
             response.EnsureSuccessStatusCode();
 
             var responseString = await response.Content.ReadAsStringAsync();

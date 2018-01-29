@@ -32,17 +32,19 @@ namespace Application.API
             servcieRegister.Register(services);
             servcieRegister.ConfigureLocalization(services);
 
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(
-            IApplicationBuilder app, 
+            IApplicationBuilder app,
             IHostingEnvironment env,
             ILoggerFactory loggerFactory)
         {
             app.UseCors(builder =>
-               builder.WithOrigins("http://localhost:8082/"));
+                builder.AllowAnyOrigin()
+                       .AllowAnyMethod()
+                       .AllowAnyHeader());
+
             app.UseRequestLocalization();
             app.UseMvc(routes =>
             {

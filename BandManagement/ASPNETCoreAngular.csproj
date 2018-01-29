@@ -20,6 +20,44 @@
     <Content Remove="ClientApp\**" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="wwwroot\primeng\resources\themes\cruze\theme.css.map" />
+    <None Include="wwwroot\primeng\resources\themes\cruze\theme.scss" />
+    <None Include="wwwroot\primeng\resources\themes\cupertino\theme.css.map" />
+    <None Include="wwwroot\primeng\resources\themes\cupertino\theme.scss" />
+    <None Include="wwwroot\primeng\resources\themes\darkness\theme.css.map" />
+    <None Include="wwwroot\primeng\resources\themes\darkness\theme.scss" />
+    <None Include="wwwroot\primeng\resources\themes\flick\theme.css.map" />
+    <None Include="wwwroot\primeng\resources\themes\flick\theme.scss" />
+    <None Include="wwwroot\primeng\resources\themes\home\theme.css.map" />
+    <None Include="wwwroot\primeng\resources\themes\home\theme.scss" />
+    <None Include="wwwroot\primeng\resources\themes\kasper\theme.css.map" />
+    <None Include="wwwroot\primeng\resources\themes\kasper\theme.scss" />
+    <None Include="wwwroot\primeng\resources\themes\lightness\theme.css.map" />
+    <None Include="wwwroot\primeng\resources\themes\lightness\theme.scss" />
+    <None Include="wwwroot\primeng\resources\themes\ludvig\theme.css.map" />
+    <None Include="wwwroot\primeng\resources\themes\ludvig\theme.scss" />
+    <None Include="wwwroot\primeng\resources\themes\omega\fonts\roboto-v15-latin-regular.svg" />
+    <None Include="wwwroot\primeng\resources\themes\omega\fonts\roboto-v15-latin-regular.woff2" />
+    <None Include="wwwroot\primeng\resources\themes\omega\theme.css.map" />
+    <None Include="wwwroot\primeng\resources\themes\omega\theme.scss" />
+    <None Include="wwwroot\primeng\resources\themes\pepper-grinder\theme.css.map" />
+    <None Include="wwwroot\primeng\resources\themes\pepper-grinder\theme.scss" />
+    <None Include="wwwroot\primeng\resources\themes\redmond\theme.css.map" />
+    <None Include="wwwroot\primeng\resources\themes\redmond\theme.scss" />
+    <None Include="wwwroot\primeng\resources\themes\rocket\theme.css.map" />
+    <None Include="wwwroot\primeng\resources\themes\rocket\theme.scss" />
+    <None Include="wwwroot\primeng\resources\themes\south-street\theme.css.map" />
+    <None Include="wwwroot\primeng\resources\themes\south-street\theme.scss" />
+    <None Include="wwwroot\primeng\resources\themes\start\theme.css.map" />
+    <None Include="wwwroot\primeng\resources\themes\start\theme.scss" />
+    <None Include="wwwroot\primeng\resources\themes\trontastic\theme.css.map" />
+    <None Include="wwwroot\primeng\resources\themes\trontastic\theme.scss" />
+    <None Include="wwwroot\primeng\resources\themes\voclain\theme.css.map" />
+    <None Include="wwwroot\primeng\resources\themes\voclain\theme.scss" />
+    <None Include="wwwroot\primeng\resources\themes\_theme.scss" />
+  </ItemGroup>
+
   <Target Name="DebugRunWebpack" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('wwwroot\dist') ">
     <!-- Ensure Node.js is installed -->
     <Exec Command="node --version" ContinueOnError="true">

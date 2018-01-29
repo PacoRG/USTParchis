@@ -30,6 +30,14 @@ namespace Infraestructure.Persistence.Repositories
             return await _context.Set<T>().ToListAsync();
         }
 
+        public virtual async Task<ICollection<T>> GetPageAsyn(int pageIndex, int pageSize)
+        {
+            return await _context.Set<T>()
+                .Skip((pageIndex - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+        }
+
         public virtual T Get(int id)
         {
             return _context.Set<T>().Find(id);

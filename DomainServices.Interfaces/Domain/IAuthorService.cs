@@ -11,5 +11,7 @@ namespace DomainServices.Services.Interfaces.Domain
         Task Delete(int authorId);
 
         Task<List<ValidationModel>> Save(Author author);
+
+        Task<ICollection<Author>> GetPage(int pageNumber, int recordsPerPage);
     }
 }

@@ -52,5 +52,7 @@ namespace Domain.Persistence.Repositories
             T Update(T t, object key);
 
             Task<T> UpdateAsyn(T t, object key);
+
+            Task<ICollection<T>> GetPageAsyn(int pageIndex, int pageSize);
         }
 }

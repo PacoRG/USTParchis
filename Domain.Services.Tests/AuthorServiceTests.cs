@@ -163,5 +163,19 @@ namespace Domain.Services.Tests
             repositoryMock.VerifyAll();
         }
 
+        [Fact]
+        public async Task Should_Get_PaginatedRecords()
+        {
+            var authorList = new List<Author>();
+            var repositoryMock = new Mock<IGenericRepository<Author>>();
+            repositoryMock.Setup(x => x.GetPageAsyn(5,10)).Returns(Task.FromResult((ICollection<Author>)authorList)).Verifiable();
+
+            var sut = new AuthorService(repositoryMock.Object, null);
+
+            await sut.GetPage(5,10);
+
+            repositoryMock.VerifyAll();
+        }
+
     }
 }

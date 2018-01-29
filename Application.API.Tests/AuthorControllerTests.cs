@@ -87,5 +87,27 @@ namespace Application.API.Tests
             Assert.NotEmpty(parsedResult);
         }
 
+        [Fact]
+        public async Task Should_Get_Paginated_Authors()
+        {
+            for (int i = 0; i < 10;i++)
+            {
+                var author = new Author { Name = "Author" + i };
+                _testContext.Database.Add(author);
+            }
+            _testContext.Database.SaveChanges();
+
+            var query = $"/Author/GetPage?pageNumber={2}&recordsPerPage={3}";
+            var response = await _testContext.Client.MakeRequestWithHeader(HttpMethod.Get, "", query);
+            response.EnsureSuccessStatusCode();
+
+            var responseString = await response.Content.ReadAsStringAsync();
+
+            var parsedResult = JsonConvert.DeserializeObject<ICollection<AuthorViewModel>>(responseString);
+
+            Assert.Equal(3, parsedResult.Count);
+            Assert.Equal("Author3", parsedResult.First().Name);
+        }
+
     }
 }
