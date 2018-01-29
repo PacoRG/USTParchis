@@ -13,5 +13,7 @@ namespace DomainServices.Services.Interfaces.Domain
         Task<List<ValidationModel>> Save(Author author);
 
         Task<ICollection<Author>> GetPage(int pageNumber, int recordsPerPage);
+
+        Task<int> Count();
     }
 }

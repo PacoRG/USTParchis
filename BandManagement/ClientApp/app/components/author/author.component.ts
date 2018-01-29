@@ -8,6 +8,7 @@ import {DataTableModule} from 'primeng/datatable';
 import {ButtonModule} from 'primeng/button';
 
 import { ToastrService } from 'ngx-toastr';
+import { LazyLoadEvent } from 'primeng/components/common/lazyloadevent';
 
 @Component({
     selector: 'author',
@@ -18,21 +19,28 @@ import { ToastrService } from 'ngx-toastr';
 export class AuthorComponent implements OnInit {
 
     private authors: Author[];
-    private totalRecords: number;
+    private _totalRecords: number;
 
  
     private _toastService: ToastrService;
 
     constructor(private authorService: AuthorsService, private toastr: ToastrService) {
         this._toastService = toastr;
+        this._totalRecords = 10;
    }
 
     ngOnInit() {
-        this.loadData();
     }
 
-    loadData() {
-        this.authorService.getAuthors()
+    loadData(event: LazyLoadEvent) {
+        var pageNumber = event.first != undefined ? event.first + 1 : 1;
+        this.authorService.getAuthorsPage(pageNumber, event.rows)
+            .then(authors => this.authors = authors)
+            .catch(error => { this._toastService.error(error.message, error.name); });
+    }
+
+    loadAll() {
+        this.authorService.getAuthorsPage()
             .then(authors => this.authors = authors)
             .catch(error => { this._toastService.error(error.message, error.name); });
     }

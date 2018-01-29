@@ -15,7 +15,8 @@
             <div class="ContentSideSections Implementation">
 
                 <p-dataTable [value]="authors" [rows]="10" [paginator]="true"
-                             [pageLinks]="3" [rowsPerPageOptions]="[5,10,20]">
+                             [pageLinks]="3" [rowsPerPageOptions]="[5,10,20]"
+                             [lazy]="true" (onLazyLoad)="loadData($event)" [totalRecords]="_totalRecords">
 
                     <header>Detalles</header>
 

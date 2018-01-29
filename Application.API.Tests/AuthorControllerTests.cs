@@ -109,5 +109,27 @@ namespace Application.API.Tests
             Assert.Equal("Author3", parsedResult.First().Name);
         }
 
+
+        [Fact]
+        public async Task Should_Count()
+        {
+            for (int i = 0; i < 10; i++)
+            {
+                var author = new Author { Name = "Author" + i };
+                _testContext.Database.Add(author);
+            }
+            _testContext.Database.SaveChanges();
+
+            var query = $"/Author/Count";
+            var response = await _testContext.Client.MakeRequestWithHeader(HttpMethod.Get, "", query);
+            response.EnsureSuccessStatusCode();
+
+            var responseString = await response.Content.ReadAsStringAsync();
+
+            var parsedResult = JsonConvert.DeserializeObject<int>(responseString);
+
+            Assert.Equal(10, parsedResult);
+        }
+
     }
 }

@@ -28,6 +28,14 @@ namespace Application.API.Controllers
         }
 
         [HttpGet]
+        public async Task<int> Count()
+        {
+            var total = await _authorService.Count();
+
+            return total;
+        }
+
+        [HttpGet]
         public async Task<ICollection<AuthorViewModel>> GetAll()
         {
             _logger.LogInformation("Call to AuthorViemModel");

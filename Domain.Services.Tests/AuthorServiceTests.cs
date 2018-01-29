@@ -177,5 +177,19 @@ namespace Domain.Services.Tests
             repositoryMock.VerifyAll();
         }
 
+        [Fact]
+        public async Task Should_Count()
+        {
+            var authorList = new List<Author>();
+            var repositoryMock = new Mock<IGenericRepository<Author>>();
+            repositoryMock.Setup(x => x.CountAsync()).Returns(Task.FromResult(3)).Verifiable();
+
+            var sut = new AuthorService(repositoryMock.Object, null);
+
+            await sut.Count();
+
+            repositoryMock.VerifyAll();
+        }
+
     }
 }
