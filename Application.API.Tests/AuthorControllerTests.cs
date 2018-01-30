@@ -2,6 +2,7 @@ using Application.API.Tests.Utils;
 using Application.ViewModels;
 using Application.ViewModels.Band;
 using Domain.Model;
+using Domain.Model.Infraestructure;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,7 +28,7 @@ namespace Application.API.Tests
             _testContext.Database.Add(author);
             _testContext.Database.SaveChanges();
 
-            var response = await _testContext.Client.MakeRequestWithHeader(HttpMethod.Get,"", "/Author/GetAll");
+            var response = await _testContext.Client.MakeRequestWithHeader(HttpMethod.Get, "", "/Author/GetAll");
             response.EnsureSuccessStatusCode();
 
             var responseString = await response.Content.ReadAsStringAsync();
@@ -46,9 +47,9 @@ namespace Application.API.Tests
             _testContext.Database.SaveChanges();
 
             var response = await _testContext.Client.MakeRequestWithHeader(
-                HttpMethod.Post, 
+                HttpMethod.Post,
                 "",
-                "/Author/Delete/"+author.Id);
+                "/Author/Delete/" + author.Id);
 
             response.EnsureSuccessStatusCode();
 
@@ -90,25 +91,117 @@ namespace Application.API.Tests
         [Fact]
         public async Task Should_Get_Paginated_Authors()
         {
-            for (int i = 0; i < 10;i++)
+            for (int i = 0; i < 10; i++)
             {
                 var author = new Author { Name = "Author" + i };
                 _testContext.Database.Add(author);
             }
             _testContext.Database.SaveChanges();
 
-            var query = $"/Author/GetPage?pageNumber={2}&recordsPerPage={3}";
-            var response = await _testContext.Client.MakeRequestWithHeader(HttpMethod.Get, "", query);
+            var searchModel = new SearchModel
+            {
+                PageIndex = 2,
+                RecordsPerPage = 3
+            };
+
+            var query = $"/Author/GetPage";
+            var response = await _testContext.Client.MakeRequestWithHeader(HttpMethod.Post, searchModel, query);
             response.EnsureSuccessStatusCode();
 
             var responseString = await response.Content.ReadAsStringAsync();
 
-            var parsedResult = JsonConvert.DeserializeObject<ICollection<AuthorViewModel>>(responseString);
+            var parsedResult = JsonConvert.DeserializeObject<SearchResultModel<AuthorViewModel>>(responseString);
 
-            Assert.Equal(3, parsedResult.Count);
-            Assert.Equal("Author3", parsedResult.First().Name);
+            Assert.Equal(3, parsedResult.Records.Count);
+            Assert.Equal("Author3", parsedResult.Records.First().Name);
         }
 
+        [Fact]
+        public async Task Should_Get_Sorted_Authors()
+        {
+            for (int i = 0; i < 10; i++)
+            {
+                var author = new Author { Name = "Author" + i };
+                _testContext.Database.Add(author);
+            }
+            _testContext.Database.SaveChanges();
+
+            var searchModel = new SearchModel
+            {
+                SortColumn = "Name",
+                IsAscendingSort = false
+            };
+
+            var query = $"/Author/GetPage";
+            var response = await _testContext.Client.MakeRequestWithHeader(HttpMethod.Post, searchModel, query);
+            response.EnsureSuccessStatusCode();
+
+            var responseString = await response.Content.ReadAsStringAsync();
+
+            var parsedResult = JsonConvert.DeserializeObject<SearchResultModel<AuthorViewModel>>(responseString);
+
+            Assert.Equal("Author9", parsedResult.Records.First().Name);
+        }
+
+        [Fact]
+        public async Task Should_Get_Filtered_Authors()
+        {
+            for (int i = 0; i < 10; i++)
+            {
+                var author = new Author { Name = "Author" + i };
+                _testContext.Database.Add(author);
+            }
+            _testContext.Database.SaveChanges();
+
+            var searchModel = new SearchModel();
+            searchModel.Filters.Add(
+                new FilterModel
+                {
+                    Column = "Name",
+                    FilterValue = "2",
+                    Type = FilterType.Contains
+                });
+
+            var query = $"/Author/GetPage";
+            var response = await _testContext.Client.MakeRequestWithHeader(HttpMethod.Post, searchModel, query);
+            response.EnsureSuccessStatusCode();
+
+            var responseString = await response.Content.ReadAsStringAsync();
+
+            var parsedResult = JsonConvert.DeserializeObject<SearchResultModel<AuthorViewModel>>(responseString);
+
+            Assert.Equal("Author2", parsedResult.Records.First().Name);
+        }
+
+        [Fact]
+        public async Task Should_Get_Filtered_On_Integer_Authors()
+        {
+            for (int i = 0; i < 10; i++)
+            {
+                var author = new Author { Name = "Author" + i };
+                _testContext.Database.Add(author);
+            }
+            _testContext.Database.SaveChanges();
+
+            var searchModel = new SearchModel();
+            searchModel.Filters.Add(
+                new FilterModel
+                {
+                    Column = "Id",
+                    FilterValue = "3",
+                    Type = FilterType.Contains
+                });
+
+            var query = $"/Author/GetPage";
+            var response = await _testContext.Client.MakeRequestWithHeader(HttpMethod.Post, searchModel, query);
+            response.EnsureSuccessStatusCode();
+
+            var responseString = await response.Content.ReadAsStringAsync();
+
+            var parsedResult = JsonConvert.DeserializeObject<SearchResultModel<AuthorViewModel>>(responseString);
+
+            Assert.Equal("Author2", parsedResult.Records.First().Name);
+        }
 
         [Fact]
         public async Task Should_Count()

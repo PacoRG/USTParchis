@@ -1,4 +1,7 @@
-﻿using Domain.Persistence.Repositories;
+﻿using Domain.Model;
+using Domain.Model.Extensions;
+using Domain.Model.Infraestructure;
+using Domain.Persistence.Repositories;
 using Infraestructure.Database;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -19,40 +22,73 @@ namespace Infraestructure.Persistence.Repositories
             _context = context;
         }
 
-        public IQueryable<T> GetAll()
-        {
-            return _context.Set<T>();
-        }
-
         public virtual async Task<ICollection<T>> GetAllAsyn()
         {
 
             return await _context.Set<T>().ToListAsync();
         }
 
-        public virtual async Task<ICollection<T>> GetPageAsyn(int pageIndex, int pageSize)
+        public virtual async Task<SearchResultModel<T>> SearchAsync(SearchModel searchModel)
         {
-            return await _context.Set<T>()
-                .Skip((pageIndex - 1) * pageSize)
-                .Take(pageSize)
-                .ToListAsync();
+            if (searchModel == null)
+                throw new NullReferenceException(nameof(searchModel));
+
+            IQueryable<T> query = _context.Set<T>();
+
+            query = this.ApplySorting(query, searchModel);
+            query = this.ApplyFiltering(query, searchModel);
+
+            if (searchModel.Filters.Count > 0)
+                searchModel.PageIndex = 1;
+
+            var searchResult = new SearchResultModel<T>();
+            searchResult.TotalRecords = await query.CountAsync();
+
+            query = this.ApplyPagination(query, searchModel);
+            searchResult.Records = await query.ToListAsync();
+
+            return searchResult;
         }
 
-        public virtual T Get(int id)
+        private IQueryable<T> ApplySorting(IQueryable<T> query, SearchModel searchModel)
         {
-            return _context.Set<T>().Find(id);
+            if (!string.IsNullOrEmpty(searchModel.SortColumn) && searchModel.IsAscendingSort.HasValue)
+                return this.OrderBy(query, searchModel.SortColumn, searchModel.IsAscendingSort.Value);
+
+            return query;
+        }
+
+        private IQueryable<T> ApplyPagination(IQueryable<T> query, SearchModel searchModel)
+        {
+            if (searchModel.PageIndex.HasValue && searchModel.RecordsPerPage.HasValue)
+            {
+                return query
+                    .Skip((searchModel.PageIndex.Value - 1) * searchModel.RecordsPerPage.Value)
+                    .Take(searchModel.RecordsPerPage.Value);
+            }
+
+            return query;
+        }
+
+        private IQueryable<T> ApplyFiltering(IQueryable<T> query, SearchModel searchModel)
+        {
+            if (searchModel.Filters == null) return query;
+
+            foreach (var filter in searchModel.Filters)
+            {
+                switch (filter.Type)
+                {
+                    case FilterType.Contains:
+                        return this.FilterBy(query, filter.Column, filter.FilterValue);
+                }
+            }
+
+            return query;
         }
 
         public virtual async Task<T> GetAsync(int id)
         {
             return await _context.Set<T>().FindAsync(id);
-        }
-
-        public virtual T Add(T t)
-        {
-
-            _context.Set<T>().Add(t);
-            return t;
         }
 
         public virtual async Task<T> AddAsyn(T t)
@@ -63,19 +99,9 @@ namespace Infraestructure.Persistence.Repositories
 
         }
 
-        public virtual T Find(Expression<Func<T, bool>> match)
-        {
-            return _context.Set<T>().SingleOrDefault(match);
-        }
-
         public virtual async Task<T> FindAsync(Expression<Func<T, bool>> match)
         {
             return await _context.Set<T>().SingleOrDefaultAsync(match);
-        }
-
-        public ICollection<T> FindAll(Expression<Func<T, bool>> match)
-        {
-            return _context.Set<T>().Where(match).ToList();
         }
 
         public async Task<ICollection<T>> FindAllAsync(Expression<Func<T, bool>> match)
@@ -83,28 +109,11 @@ namespace Infraestructure.Persistence.Repositories
             return await _context.Set<T>().Where(match).ToListAsync();
         }
 
-        public virtual void Delete(T entity)
-        {
-            _context.Set<T>().Remove(entity);
-        }
-
         public virtual async Task DeleteAsyn(int id)
         {
             var entity = await GetAsync(id);
             _context.Set<T>().Remove(entity);
             return;
-        }
-
-        public virtual T Update(T t, object key)
-        {
-            if (t == null)
-                return null;
-            T exist = _context.Set<T>().Find(key);
-            if (exist != null)
-            {
-                _context.Entry(exist).CurrentValues.SetValues(t);
-            }
-            return exist;
         }
 
         public virtual async Task<T> UpdateAsyn(T t, object key)
@@ -120,19 +129,9 @@ namespace Infraestructure.Persistence.Repositories
             return exist;
         }
 
-        public int Count()
-        {
-            return _context.Set<T>().Count();
-        }
-
         public async Task<int> CountAsync()
         {
             return await _context.Set<T>().CountAsync();
-        }
-
-        public virtual void Save()
-        {
-            _context.SaveChanges();
         }
 
         public async virtual Task<int> SaveAsync()
@@ -140,29 +139,23 @@ namespace Infraestructure.Persistence.Repositories
             return await _context.SaveChangesAsync();
         }
 
-        public virtual IQueryable<T> FindBy(Expression<Func<T, bool>> predicate)
-        {
-            IQueryable<T> query = _context.Set<T>().Where(predicate);
-            return query;
-        }
-
         public virtual async Task<ICollection<T>> FindByAsyn(Expression<Func<T, bool>> predicate)
         {
             return await _context.Set<T>().Where(predicate).ToListAsync();
         }
 
-        public IQueryable<T> GetAllIncluding(params Expression<Func<T, object>>[] includeProperties)
-        {
+        //public IQueryable<T> GetAllIncluding(params Expression<Func<T, object>>[] includeProperties)
+        //{
 
-            IQueryable<T> queryable = GetAll();
-            foreach (Expression<Func<T, object>> includeProperty in includeProperties)
-            {
+        //    IQueryable<T> queryable = GetAll();
+        //    foreach (Expression<Func<T, object>> includeProperty in includeProperties)
+        //    {
 
-                queryable = queryable.Include<T, object>(includeProperty);
-            }
+        //        queryable = queryable.Include<T, object>(includeProperty);
+        //    }
 
-            return queryable;
-        }
+        //    return queryable;
+        //}
 
         private bool disposed = false;
 
@@ -182,6 +175,70 @@ namespace Infraestructure.Persistence.Repositories
         {
             Dispose(true);
             GC.SuppressFinalize(this);
+        }
+
+        private IQueryable<T> OrderBy(IQueryable<T> source, string ordering, bool isAscending = true)
+        {
+            var type = typeof(T);
+            var property = type.GetProperty(ordering);
+
+            //E1 = x 
+            var E1 = Expression.Parameter(type, "x");
+
+            //E2 = E1.PROPERTY
+            var E2 = Expression.MakeMemberAccess(E1, property);
+
+            //E3 = E1 => E2
+            var E3 = Expression.Lambda(E2, E1);
+
+            var sortType = isAscending ? "OrderBy" : "OrderByDescending";
+
+            MethodCallExpression resultExp =
+                Expression.Call(typeof(Queryable), sortType,
+                                new Type[] { type, property.PropertyType },
+                                source.Expression,
+                                Expression.Quote(E3));
+            return source.Provider.CreateQuery<T>(resultExp);
+        }
+
+        private IQueryable<T> FilterBy(IQueryable<T> source, string filterProperty, string value)
+        {
+            if (filterProperty == null | value == null) return source;
+
+            var type = typeof(T);
+            var propertyType = type.GetProperty(filterProperty);
+
+            var property = type.GetProperty(filterProperty);
+            var containsMethod = typeof(string).GetMethod("Contains");
+
+            //x
+            var accessExpresion = Expression.Parameter(type, "x");
+
+            // x.Name
+            var propertyExpression = Expression.MakeMemberAccess(accessExpresion, property);
+
+            MethodCallExpression predicate;
+
+            if (propertyType.PropertyType.IsNumeric())
+            {
+                var toString = type.GetMethod("ToString");
+                var stringExpression = Expression.Call(propertyExpression, toString);
+
+                //predicate = Id.ToString().Contains(CONSTANT)
+                predicate = Expression.Call(stringExpression, containsMethod, Expression.Constant(value));
+            }
+            else
+            {
+                //x.Name.Contains(value)
+                predicate = Expression.Call(propertyExpression, containsMethod, Expression.Constant(value));
+            }
+
+            // x => x.Name.Contains(value)
+            // x => x.Id.ToString().Contains(value)
+            var queraExpresion = Expression.Lambda< Func<T, bool>> (predicate, accessExpresion);
+
+
+            return source.Where(queraExpresion);
         }
     }
 }

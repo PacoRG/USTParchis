@@ -1,5 +1,7 @@
 ﻿using Domain.Model;
+using Domain.Model.Infraestructure;
 using Domain.Persistence.Repositories;
+using DomainServices.Services.Base;
 using DomainServices.Services.Interfaces;
 using DomainServices.Services.Interfaces.Domain;
 using System;
@@ -8,44 +10,15 @@ using System.Threading.Tasks;
 
 namespace DomainServices.Services.Band
 {
-    public class AuthorService : IAuthorService
+    public class AuthorService : EntityService<Author>, IAuthorService
     {
-        private IGenericRepository<Author> _authorRepository;
         private IValidationService _validationService;
 
         public AuthorService(
-            IGenericRepository<Author> authorRepository,
-            IValidationService validationService)
+            IGenericRepository<Author> repository,
+            IValidationService validationService): base(repository)
         {
-            _authorRepository = authorRepository;
             _validationService = validationService;
-        }
-
-        public async Task<ICollection<Author>> GetAll()
-        {
-            return await _authorRepository.GetAllAsyn();
-        }
-
-        public async Task<ICollection<Author>> GetPage(int pageNumber, int recordsPerPage)
-        {
-            return await _authorRepository.GetPageAsyn(pageNumber, recordsPerPage);
-        }
-
-        public async Task<int> Count()
-        {
-            return await _authorRepository.CountAsync();
-        }
-
-        public async Task Delete(int authorId)
-        {
-            if (await _authorRepository.GetAsync(authorId) == null)
-            {
-                throw new System.Exception($"The Author with Id : {authorId} does not exist.");
-            }
-
-            await _authorRepository.DeleteAsyn(authorId);
-            await _authorRepository.SaveAsync();
-            return;
         }
 
         public async Task<List<ValidationModel>> Save(Author author)
@@ -61,20 +34,20 @@ namespace DomainServices.Services.Band
 
             if (authorExists)
             {
-                await _authorRepository.UpdateAsyn(author, author.Id);
+                await _repository.UpdateAsyn(author, author.Id);
             }
             else
             {
-                await _authorRepository.AddAsyn(author);
+                await _repository.AddAsyn(author);
             }
 
-            await _authorRepository.SaveAsync();
+            await _repository.SaveAsync();
             return new List<ValidationModel>();
         }
 
         private async Task<bool> AuthorExists(Author author)
         {
-            return await _authorRepository.GetAsync(author.Id) != null;
+            return await _repository.GetAsync(author.Id) != null;
         }
     }
 }

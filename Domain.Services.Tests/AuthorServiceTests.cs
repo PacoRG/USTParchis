@@ -1,5 +1,6 @@
 using Domain.Model;
 using Domain.Model.Enums;
+using Domain.Model.Infraestructure;
 using Domain.Persistence.Repositories;
 using DomainServices.Services;
 using DomainServices.Services.Band;
@@ -113,7 +114,7 @@ namespace Domain.Services.Tests
             var validationError = await sut.Save(author);
 
             Assert.True(validationError.Count > 0);
-            repositoryMock.Verify(service => service.Save(), Times.Never());
+            repositoryMock.Verify(x => x.SaveAsync(), Times.Never());
         }
 
         [Fact]
@@ -166,13 +167,25 @@ namespace Domain.Services.Tests
         [Fact]
         public async Task Should_Get_PaginatedRecords()
         {
+            var searchModel = new SearchModel
+            {
+                PageIndex = 5,
+                RecordsPerPage = 10
+            };
+
             var authorList = new List<Author>();
+            var searchResult = new SearchResultModel<Author>();
+            searchResult.Records = authorList;
+
             var repositoryMock = new Mock<IGenericRepository<Author>>();
-            repositoryMock.Setup(x => x.GetPageAsyn(5,10)).Returns(Task.FromResult((ICollection<Author>)authorList)).Verifiable();
+            repositoryMock.Setup(x => x
+                .SearchAsync(searchModel))
+                .Returns(Task.FromResult(searchResult))
+                .Verifiable();
 
             var sut = new AuthorService(repositoryMock.Object, null);
 
-            await sut.GetPage(5,10);
+            await sut.GetPage(searchModel);
 
             repositoryMock.VerifyAll();
         }

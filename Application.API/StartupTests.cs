@@ -36,7 +36,11 @@ namespace Application.API
                 options.UseInMemoryDatabase("MyTestDatabase"));
 
             services.AddLocalization();
-            services.AddMvc();
+            services.AddMvc().AddJsonOptions(options =>
+            {
+                options.SerializerSettings.ContractResolver
+                    = new Newtonsoft.Json.Serialization.DefaultContractResolver();
+            }); ;
 
             servcieRegister.Register(services);
 

@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Infraestructure.Reflection
+namespace Domain.Model.Extensions
 {
-    public static class Types
+    public static class TypeExtensions
     {
-        public static bool IsPrimitive(Type type)
+        public static bool IsPrimitive(this Type type)
         {
             return type.IsPrimitive ||
                     type == typeof(String) ||
@@ -17,7 +17,7 @@ namespace Infraestructure.Reflection
                     type == typeof(Boolean);
         }
 
-        public static bool IsNumeric(Type type)
+        public static bool IsNumeric(this Type type)
         {
             return type.IsPrimitive ||
                     type == typeof(int) ||

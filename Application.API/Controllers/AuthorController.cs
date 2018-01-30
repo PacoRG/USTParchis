@@ -2,6 +2,7 @@
 using Application.ViewModels;
 using Application.ViewModels.Band;
 using Domain.Model;
+using Domain.Model.Infraestructure;
 using DomainServices.Interfaces.Infraestructure;
 using DomainServices.Services.Interfaces.Domain;
 using Microsoft.AspNetCore.Mvc;
@@ -46,13 +47,15 @@ namespace Application.API.Controllers
             return authorsVM;
         }
 
-        [HttpGet]
-        public async Task<ICollection<AuthorViewModel>> GetPage(int pageNumber, int recordsPerPage)
+        [HttpPost]
+        public async Task<SearchResultModel<AuthorViewModel>> GetPage([FromBody] SearchModel searchModel)
         {
-            var authors = await _authorService.GetPage(pageNumber, recordsPerPage);
-            var authorsVM = authors.ToViewModel(_mapper);
+            var result = await _authorService.GetPage(searchModel);
+            var resultVM = new SearchResultModel<AuthorViewModel>();
+            resultVM.Records = result.Records.ToViewModel(_mapper);
+            resultVM.TotalRecords = result.TotalRecords;
 
-            return authorsVM;
+            return resultVM;
         }
 
         [HttpPost]

@@ -2,11 +2,13 @@
 import { HttpClient, HttpResponse, HttpHeaders, HttpRequest } from '@angular/common/http';
 
 import { Author } from '../models/author.model';
-
+import { SearchModel } from '../models/search.model';
+import { SearchResult } from '../models/search.model';
 
 @Injectable()
 export class AuthorsService {
     private _getPage = "/Author/GetPage";
+    private _countUrl = "/Author/Count";
     private _getAllUrl = "/Author/GetAll";
     public _saveUrl: string = '/Author/Save/';
     public _deleteByIdUrl: string = '/Author/Delete/';
@@ -26,12 +28,20 @@ export class AuthorsService {
             .then(res => <Author[]>res)
     }
 
-    getAuthorsPage(pageIndex?:number, recordsPerPage?:number) {
-        var getAuthorsUrl = this._apiUrl + this._getPage + "?pageNumber=" + pageIndex + "&recordsPerPage=" + recordsPerPage;
+    getAuthorsPage(searchModel: SearchModel) {
 
-        return this.http.get(getAuthorsUrl)
+        var getAuthorsUrl = this._apiUrl + this._getPage;
+
+        return this.http.post(getAuthorsUrl, searchModel)
             .toPromise()
-            .then(res => <Author[]>res)
+            .then(res => <SearchResult<Author>>res)
+    }
+
+    count() {
+        return this.http.get(this._apiUrl + this._countUrl)
+            .toPromise()
+            .then(
+            res => <number>res)
     }
 
 }

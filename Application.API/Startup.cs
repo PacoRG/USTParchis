@@ -27,7 +27,11 @@ namespace Application.API
                 options.UseSqlServer(this.Configuration.GetConnectionString("DatabaseManagement"), sqlOptions =>
                     sqlOptions.MigrationsAssembly("Infraestructure.Persistence")));
 
-            services.AddMvc();
+            services.AddMvc().AddJsonOptions(options =>
+            {
+                options.SerializerSettings.ContractResolver
+                    = new Newtonsoft.Json.Serialization.DefaultContractResolver();
+            });
 
             servcieRegister.Register(services);
             servcieRegister.ConfigureLocalization(services);

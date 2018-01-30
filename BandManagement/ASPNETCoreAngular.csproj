@@ -21,6 +21,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="ClientApp\app\models\search.model.ts" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Include="wwwroot\primeng\resources\themes\cruze\theme.css.map" />
     <None Include="wwwroot\primeng\resources\themes\cruze\theme.scss" />
     <None Include="wwwroot\primeng\resources\themes\cupertino\theme.css.map" />
@@ -56,6 +60,14 @@
     <None Include="wwwroot\primeng\resources\themes\voclain\theme.css.map" />
     <None Include="wwwroot\primeng\resources\themes\voclain\theme.scss" />
     <None Include="wwwroot\primeng\resources\themes\_theme.scss" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <TypeScriptCompile Include="ClientApp\app\models\search.model.ts" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="ClientApp\app\helper\" />
   </ItemGroup>
 
   <Target Name="DebugRunWebpack" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('wwwroot\dist') ">
