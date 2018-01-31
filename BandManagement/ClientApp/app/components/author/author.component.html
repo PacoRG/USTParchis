@@ -28,7 +28,8 @@
                               [sortable]="true" [style]="{'width':'100px'}"></p-column>
                     <p-column field="Name" header="Nombre"
                               filterPlaceholder="Contiene" [filter]="true" filterMatchMode="contains"
-                              [sortable]="true"></p-column>
+                              [sortable]="true">
+                    </p-column>
 
                     <p-column [style]="{'width':'100px'}">
                         <ng-template let-col let-author="authors" pTemplate type="body">
@@ -67,6 +68,13 @@
                             <div style="width:300px;">
                                 <input pInputText id="Author.Name"
                                        [(ngModel)]="author.Name" />
+                            </div>
+                        </div>
+                        <div class="ui-grid-row">
+                            <div class="ui-grid-col-12 ui-messages-error" 
+                                 [hidden]="!validationFields.Item(authorIdentifier).Visible"
+                                 style="margin: 0 6px">
+                                {{validationFields.Item(authorIdentifier).Message}}
                             </div>
                         </div>
                     </div>

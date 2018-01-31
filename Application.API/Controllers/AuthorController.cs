@@ -69,7 +69,7 @@ namespace Application.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Save([FromBody]AuthorViewModel authorVm)
+        public async Task<List<ValidationResultViewModel>> Save([FromBody]AuthorViewModel authorVm)
         {
             _logger.LogInformation(authorVm.ToString());
 
@@ -83,7 +83,7 @@ namespace Application.API.Controllers
                 resultsViewModels.Add(_mapper.Map<ValidationResultViewModel>(result));
             }
 
-            return this.Ok(resultsViewModels);
+            return resultsViewModels;
         }
     }
 }

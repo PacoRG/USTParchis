@@ -4,6 +4,7 @@ import { HttpClient, HttpResponse, HttpHeaders, HttpRequest } from '@angular/com
 import { Author } from '../models/author.model';
 import { SearchModel } from '../models/search.model';
 import { SearchResult } from '../models/search.model';
+import { ValidationResult } from '../models/validationResult.model';
 
 @Injectable()
 export class AuthorsService {
@@ -42,6 +43,15 @@ export class AuthorsService {
             .toPromise()
             .then(
             res => <number>res)
+    }
+
+    save(author: Author) {
+
+        var saveUrl = this._apiUrl + this._saveUrl;
+
+        return this.http.post(saveUrl, author)
+            .toPromise()
+            .then(res => <ValidationResult[]>res);
     }
 
 }

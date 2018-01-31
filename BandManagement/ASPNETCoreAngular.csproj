@@ -21,7 +21,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="ClientApp\app\models\dictionary.model.ts" />
     <None Remove="ClientApp\app\models\search.model.ts" />
+    <None Remove="ClientApp\app\models\validationField.model.ts" />
+    <None Remove="ClientApp\app\models\validationResult.model.ts" />
   </ItemGroup>
 
   <ItemGroup>
@@ -63,7 +66,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <TypeScriptCompile Include="ClientApp\app\models\dictionary.model.ts" />
     <TypeScriptCompile Include="ClientApp\app\models\search.model.ts" />
+    <TypeScriptCompile Include="ClientApp\app\models\validationField.model.ts" />
+    <TypeScriptCompile Include="ClientApp\app\models\validationResult.model.ts" />
   </ItemGroup>
 
   <ItemGroup>
