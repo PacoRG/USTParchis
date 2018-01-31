@@ -38,6 +38,8 @@ export class AuthorComponent implements OnInit {
     private newAuthor: boolean;
     private nameCorrect: boolean;
 
+    private displayDeleteDialog: boolean;
+
     constructor(private authorService: AuthorsService, private toastr: ToastrService) {
         this._toastService = toastr;
         this._totalRecords = 10;
@@ -46,8 +48,8 @@ export class AuthorComponent implements OnInit {
 
     ngOnInit() {
         this.validationFields = new Dictionary<ValidationField>();
-        this.validationFields.Add(this.authorIdentifier,new ValidationField());
-
+        this.validationFields.Add(this.authorIdentifier, new ValidationField());
+        this.displayDeleteDialog = false;
         this.author = new Author();
 
         this.authorService.count()
@@ -96,6 +98,19 @@ export class AuthorComponent implements OnInit {
         this.clearValidations();
     }
 
+    showDialogToDelete(author: Author) {
+        this.author = author;
+        this.displayDeleteDialog = true;
+    }
+
+    showDialogToUpdate(author: Author) {
+        this.author = new Author();
+        this.author.Id = author.Id;
+        this.author.Name = author.Name;
+        this.displayDialog = true;
+        this.clearValidations();
+    }
+
     save() {
         this.authorService.save(this.author)
             .then(results => {
@@ -110,6 +125,19 @@ export class AuthorComponent implements OnInit {
 
             })
             .catch(error => { this._toastService.error(error.message, error.name); })
+    }
+
+    okDelete(isDeleteConfirm: boolean) {
+        if (isDeleteConfirm) {
+            this.authorService.delete(this.author)
+                .then(results => {
+                    this._toastService.success("El autor se ha eliminado correctamente");
+                    this.loadData(this._lastLoadEvent);
+                })
+                .catch(error => { this._toastService.error(error.message, error.name); })
+        }
+
+        this.displayDeleteDialog = false;
     }
 
     clearValidations() {

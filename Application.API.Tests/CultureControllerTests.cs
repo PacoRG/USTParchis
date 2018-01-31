@@ -32,7 +32,7 @@ namespace Application.API.Tests
             var responseString = await response.Content.ReadAsStringAsync();
 
             var parsedResult = JsonConvert.DeserializeObject<string>(responseString);
-            Assert.Equal("This is a test", parsedResult);
+            Assert.Equal("Esto es una prueba", parsedResult);
         }
 
         [Fact]

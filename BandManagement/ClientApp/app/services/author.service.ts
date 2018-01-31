@@ -46,12 +46,18 @@ export class AuthorsService {
     }
 
     save(author: Author) {
-
         var saveUrl = this._apiUrl + this._saveUrl;
 
         return this.http.post(saveUrl, author)
             .toPromise()
             .then(res => <ValidationResult[]>res);
+    }
+
+    delete(author: Author) {
+        var deleteURL = this._apiUrl + this._deleteByIdUrl;
+
+        return this.http.post(deleteURL, author)
+            .toPromise();
     }
 
 }

@@ -59,11 +59,13 @@ namespace Application.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete([FromBody]AuthorViewModel authorVm)
         {
-            _logger.LogInformation("Call to DeleteAuthor");
-
-            await _authorService.Delete(id);
+            var author = _mapper.Map<Author>(authorVm);
+            if (author != null)
+                await _authorService.Delete(author.Id);
+            else
+                throw new System.Exception("Author not found on Delete");
 
             return this.Ok();
         }
@@ -71,8 +73,6 @@ namespace Application.API.Controllers
         [HttpPost]
         public async Task<List<ValidationResultViewModel>> Save([FromBody]AuthorViewModel authorVm)
         {
-            _logger.LogInformation(authorVm.ToString());
-
             var author = _mapper.Map<Author>(authorVm);
 
             var validationResult = await _authorService.Save(author);

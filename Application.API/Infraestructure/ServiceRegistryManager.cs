@@ -46,7 +46,7 @@ namespace Application.API.Infraestructure
                     new CultureInfo("en")
                 };
 
-                options.DefaultRequestCulture = new RequestCulture("en-US");
+                options.DefaultRequestCulture = new RequestCulture("es");
                 options.SupportedCultures = supportedCultures;
                 options.SupportedUICultures = supportedCultures;
             });

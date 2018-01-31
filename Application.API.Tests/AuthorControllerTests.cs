@@ -46,10 +46,12 @@ namespace Application.API.Tests
             _testContext.Database.Add(author);
             _testContext.Database.SaveChanges();
 
+            var authorVM = new AuthorViewModel { Id = author.Id,Name = "MyName" };
+
             var response = await _testContext.Client.MakeRequestWithHeader(
                 HttpMethod.Post,
-                "",
-                "/Author/Delete/" + author.Id);
+                authorVM,
+                "/Author/Delete/");
 
             response.EnsureSuccessStatusCode();
 
